@@ -1,10 +1,18 @@
 require('dotenv').config();
 const express = require('express');
+const { Client } = require('pg');
 const bodyParser = require('body-parser');
 const authorizeStrava = require('./authorizeStrava');
 const getActivity = require('./getActivity');
 
 const app = express();
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: true,
+});
+
+client.connect();
 
 app.use(bodyParser.json());
 
@@ -24,8 +32,8 @@ app.post('/subscription', (req, res) => {
   if (object_type === 'activity' && aspect_type === 'create') {
     // GET activity from Strava api
     const accessToken = process.env.STRAVA_AUTH_TOKEN;  // Need Strava Auth
-    const activity = getActivity(object_id, accessToken);
-    activity.then(data => console.log(data));
+    getActivity(object_id, accessToken)
+      .then(activity => console.log(activity));
   }
 
 

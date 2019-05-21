@@ -25,7 +25,7 @@ app.post('/subscription', (req, res) => {
     // GET activity from Strava api
     const accessToken = process.env.STRAVA_AUTH_TOKEN;  // Need Strava Auth
     const activity = getActivity(object_id, accessToken);
-    console.log(activity);
+    activity.then(data => console.log(data));
   }
 
 

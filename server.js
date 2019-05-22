@@ -65,6 +65,35 @@ const getStravaAccessToken = (athlete_id) => {
     });
 }
 
+const getWeatherConditions = (latitude, longitude, time) => {
+  const url = `https://api.darksky.net/forecast/${process.env.DARKSKY_KEY}/${latitude},${longitude},${time}`;
+
+  return fetch(url, {
+    method: 'GET',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+  }).then(res => res.json())
+    .catch(err => console.log(err));
+}
+
+const updateDescription = (activityId, accessToken, updateString) => {
+  const url = `https://www.strava.com/api/v3/activities/${activityId}`;
+  const data = { 'description': updateString };
+
+  return fetch(url, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${accessToken}`,
+    },
+    body: JSON.stringify(data)
+  }).then(res => res.json())
+    .catch(err => console.log(err));
+}
+
 app.post('/subscription', (req, res) => {
   res.sendStatus(200);
   const { object_type, aspect_type, object_id, owner_id } = req.body;
@@ -72,11 +101,22 @@ app.post('/subscription', (req, res) => {
 
   if (object_type === 'activity' && aspect_type === 'create') {
     // GET activity from Strava api
+    let accessToken;
     getStravaAccessToken(owner_id)
-      .then(accessToken => {
-        return getActivity(object_id, accessToken);
+      .then(token => {
+        accessToken = token;
+        return getActivity(object_id, token);
       })
-      .then(activity => console.log(activity))
+      .then(activity => {
+        const { start_latitude, start_longitude, start_date_local } = activity;
+        const start_time = Math.floor(Date.parse(start_date_local) / 1000);
+        return getWeatherConditions(start_latitude, start_longitude, start_time);
+      })
+      .then(weather => {
+        const { icon } = weather.currently;
+        return updateDescription(object_id, accessToken, icon);
+      })
+      .then(res => console.log(res))
       .catch(err => console.log(err));
   }
 

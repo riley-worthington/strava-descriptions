@@ -7,6 +7,7 @@ const getActivity = require('./getActivity');
 const getStravaAccessToken = require('./getStravaAccessToken');
 const getSpotifyAccessToken = require('./getSpotifyAccessToken');
 const getSpotifyRecentlyPlayed = require('./getSpotifyRecentlyPlayed');
+const getSongsPlayedDuringActivity = require('./getSongsPlayedDuringActivity');
 const getWeatherConditions = require('./getWeatherConditions');
 const buildDescription = require('./buildDescription');
 const updateDescription = require('./updateDescription');
@@ -30,21 +31,29 @@ async function handleWebhookEvent(objectId, ownerId) {
   // Strava
   const stravaToken = await getStravaAccessToken(ownerId);
   const stravaActivity = await getActivity(objectId, stravaToken);
-  const { start_latitude, start_longitude, start_date } = stravaActivity;
-
-  // Weather
+  const { start_latitude, start_longitude, start_date, elapsed_time } = stravaActivity;
   const epochStartTimeMS = Date.parse(start_date);
   const epochStartTime = Math.floor(epochStartTimeMS / 1000);
-  const weather = await getWeatherConditions(start_latitude, start_longitude, epochStartTime);
+
+  // Weather
+  const weather = (start_latitude && start_longitude) ? await getWeatherConditions(start_latitude, start_longitude, epochStartTime) : null;
 
   // Spotify
   const spotifyToken = await getSpotifyAccessToken(ownerId);
   const spotifyHistory = await getSpotifyRecentlyPlayed(epochStartTimeMS, spotifyToken);
-  console.log(spotifyHistory);
+  const epochEndTimeMS = epochStartTimeMS + (elapsed_time * 1000);
+  const duringActivity = getSongsPlayedDuringActivity(spotifyHistory.items, epochStartTimeMS, epochEndTimeMS);
+  let tracks = duringActivity.map(item => item.track).reverse();
 
   // Description
-  const { icon, temperature } = weather.currently;
-  const updateString = buildDescription(icon, temperature);
+  let updateString;
+  if (weather) {
+    const { icon, temperature } = weather.currently;
+    updateString = buildDescription(icon, temperature, tracks);
+  } else {
+    updateString = buildDescription(null, null, tracks);
+  }
+
   return updateDescription(objectId, stravaToken, updateString);
 }
 

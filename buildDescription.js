@@ -19,10 +19,22 @@ const weatherToEmoji = (icon) => {
   } else {
     return '';
   }
-
 }
 
-const buildDescription = (icon, temperature) => {
+const makePlaylist = tracks => {
+  // returns a string of readable song info
+  let playlist = [];
+  for (let i = 0; i < tracks.length; i++) {
+    let track = tracks[i];
+    let artists = (track.artists).map(a => a.name);
+    let artistList = artists.join(', ');
+
+    playlist.push(`${track.name} - ${artistList}`);
+  }
+  return playlist.join('\n');
+}
+
+const buildDescription = (icon, temperature, tracks) => {
   const iconToDesc = {
     'clear-day': 'Clear',
     'clear-night': 'Clear',
@@ -36,16 +48,34 @@ const buildDescription = (icon, temperature) => {
     'partly-cloudy-night': 'Partly Cloudy',
   }
 
-  let weather;
-  if (icon in iconToDesc) {
-    weather = iconToDesc[icon];
-  } else {
-    let spaced = icon.replace('-', ' ');
-    weather = spaced.charAt(0).toUpperCase() + spaced.slice(1);
-  }
-  const emoji = weatherToEmoji(icon);
+  let weather = '';
+  if (icon && temperature) {
+    let skyProfile;
+    if (icon in iconToDesc) {
+      skyProfile = iconToDesc[icon];
+    } else {
+      let spaced = icon.replace('-', ' ');
+      skyProfile = spaced.charAt(0).toUpperCase() + spaced.slice(1);
+    }
+    const emoji = weatherToEmoji(icon);
 
-  return `${Math.round(temperature)} °F, ${weather} ${emoji}`;
+    weather = `${Math.round(temperature)} °F, ${skyProfile} ${emoji}`;
+  }
+
+  let playlist = '';
+  if (tracks.length > 0) {
+    playlist = makePlaylist(tracks);
+  }
+
+  if (weather && playlist) {
+    return `${weather}\n\n${playlist}`;
+  } else if (weather) {
+    return weather;
+  } else if (playlist) {
+    return playlist;
+  } else {
+    return '';
+  }
 
 }
 

@@ -11,8 +11,16 @@ const getActivity = (activityId, accessToken) => {
       Authorization: `Bearer ${accessToken}`,
     },
   })
+    .then(res => {
+      if (!res.ok) {
+        throw (`${res.status} ${res.statusText}`);
+      }
+      return res;
+    })
     .then(res => res.json())
-    .catch(error => console.log(error));
+    .catch(err => {
+      throw Error(`Problem getting Strava activity (${err})`);
+    });
 };
 
 module.exports = getActivity;

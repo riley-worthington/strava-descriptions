@@ -30,6 +30,12 @@ const refreshSpotifyToken = (refreshToken, athleteId) => {
     headers,
     body: searchParams,
   })
+    .then(res => {
+      if (!res.ok) {
+        throw Error(`${res.status} ${res.statusText}`);
+      }
+      return res;
+    })
     .then(res => res.json())
     .then(res => {
       const { access_token } = res;
@@ -39,7 +45,6 @@ const refreshSpotifyToken = (refreshToken, athleteId) => {
     .then(res => {
       return res.rows[0]['spotify_access_token'];
     })
-    .catch(error => console.log(error));
 
 }
 
@@ -50,7 +55,10 @@ const getSpotifyAccessToken = (athlete_id) => {
       const refreshToken = res.rows[0]['spotify_refresh_token'];
       return refreshSpotifyToken(refreshToken, athlete_id);
     })
-    .catch(error => console.log(error));
+    .catch(err => {
+      console.log(`Problem connecting to Spotify (${err})`);
+      return null;
+    });
 }
 
 module.exports = getSpotifyAccessToken;

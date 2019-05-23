@@ -13,7 +13,7 @@ const getSpotifyRecentlyPlayed = (after, accessToken) => {
     },
   })
     .then(res => res.json())
-    .catch(error => console.log(error));
+    .catch(err => console.log('Problem getting recently played', err));
 };
 
 module.exports = getSpotifyRecentlyPlayed;

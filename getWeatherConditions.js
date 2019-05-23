@@ -10,8 +10,22 @@ const getWeatherConditions = (latitude, longitude, time) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-  }).then(res => res.json())
-    .catch(err => console.log(err));
+  })
+    .then(res => {
+      if (!res.ok) {
+        throw (`${res.status} ${res.statusText}`);
+      }
+      return res;
+    })
+    .then(res => res.json())
+    .then(weather => weather.currently)
+    .catch(err => {
+      console.log(`Problem getting weather (${err})`);
+      return {
+        icon: null,
+        temperature: null
+      };
+    });
 }
 
 module.exports = getWeatherConditions;

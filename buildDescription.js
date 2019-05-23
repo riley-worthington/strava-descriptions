@@ -34,7 +34,7 @@ const makePlaylist = tracks => {
   return playlist.join('\n');
 }
 
-const buildDescription = (icon, temperature, tracks) => {
+const buildDescription = ({icon, temperature}, tracks) => {
   const iconToDesc = {
     'clear-day': 'Clear',
     'clear-night': 'Clear',

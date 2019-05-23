@@ -5,7 +5,7 @@ const {
   STRAVA_CLIENT_SECRET
 } = require('./config');
 
-const updateStravaToken = (refresh_token, athlete_id) => {
+const refreshStravaToken = (refresh_token, athlete_id) => {
   const url = `https://www.strava.com/oauth/token?client_id=${STRAVA_CLIENT_ID}&client_secret=${STRAVA_CLIENT_SECRET}&grant_type=refresh_token&refresh_token=${refresh_token}`;
   return fetch(url, {
     method: 'POST',
@@ -21,7 +21,7 @@ const updateStravaToken = (refresh_token, athlete_id) => {
       return db.query(`UPDATE auth SET strava_access_token = '${access_token}', strava_expires_at = ${expires_at}, strava_refresh_token = '${refresh_token}' WHERE strava_athlete_id = ${athlete_id} RETURNING strava_access_token;`);
     })
     .then(res => res.rows[0]['strava_access_token'])
-    .catch(error => console.log(error));
+    .catch(err => console.log(`Couldn't refresh Strava token.`, err))
 }
 
 
@@ -33,12 +33,12 @@ const getStravaAccessToken = (athlete_id) => {
       if (authInfo['strava_expires_at'] - currentTime < 3600) {
         // get new access token from Strava using refresh token
         const refresh_token = authInfo['strava_refresh_token'];
-        return updateStravaToken(refresh_token, athlete_id);
+        return refreshStravaToken(refresh_token, athlete_id);
       } else {
         return authInfo['strava_access_token'];
       }
-
-    });
+    })
+    .catch(err => console.log(`Couldn't get Strava token.`, err));
 }
 
 module.exports = getStravaAccessToken;

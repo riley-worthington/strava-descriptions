@@ -5,6 +5,8 @@ const emoji = require('node-emoji');
 const authorizeStrava = require('./authorizeStrava');
 const getActivity = require('./getActivity');
 const getStravaAccessToken = require('./getStravaAccessToken');
+const getSpotifyAccessToken = require('./getSpotifyAccessToken');
+const getSpotifyRecentlyPlayed = require('./getSpotifyRecentlyPlayed');
 const getWeatherConditions = require('./getWeatherConditions');
 const buildDescription = require('./buildDescription');
 const updateDescription = require('./updateDescription');
@@ -24,30 +26,37 @@ app.get('/subscription', (req, res) => {
   res.status(200).send(JSON.stringify({ 'hub.challenge': challenge }));
 })
 
+async function handleWebhookEvent(objectId, ownerId) {
+  // Strava
+  const stravaToken = await getStravaAccessToken(ownerId);
+  const stravaActivity = await getActivity(objectId, stravaToken);
+  const { start_latitude, start_longitude, start_date } = stravaActivity;
+
+  // Weather
+  const epochStartTimeMS = Date.parse(start_date);
+  const epochStartTime = Math.floor(epochStartTimeMS / 1000);
+  const weather = await getWeatherConditions(start_latitude, start_longitude, epochStartTime);
+
+  // Spotify
+  const spotifyToken = await getSpotifyAccessToken(ownerId);
+  const spotifyHistory = await getSpotifyRecentlyPlayed(epochStartTimeMS, spotifyToken);
+  console.log(spotifyHistory);
+
+  // Description
+  const { icon, temperature } = weather.currently;
+  const updateString = buildDescription(icon, temperature);
+  return updateDescription(objectId, stravaToken, updateString);
+}
+
 app.post('/subscription', (req, res) => {
   res.sendStatus(200);
   const { object_type, aspect_type, object_id, owner_id } = req.body;
 
   if (object_type === 'activity' && aspect_type === 'create') {
-    let accessToken;
-    getStravaAccessToken(owner_id)
-      .then(token => {
-        accessToken = token;
-        return getActivity(object_id, token);
-      })
-      .then(activity => {
-        const { start_latitude, start_longitude, start_date } = activity;
-        const start_time = Math.floor(Date.parse(start_date) / 1000);
-        return getWeatherConditions(start_latitude, start_longitude, start_time);
-      })
-      .then(weather => {
-        const { icon, temperature } = weather.currently;
-        const updateString = buildDescription(icon, temperature);
-        return updateDescription(object_id, accessToken, updateString);
-      })
-      .catch(err => console.log(err));
+    handleWebhookEvent(object_id, owner_id)
+      .then(console.log('Successfully updated description of activity ' + object_id))
+      .catch(error => console.log(error));
   }
-
 })
 
 app.post('/', (req, res) => {

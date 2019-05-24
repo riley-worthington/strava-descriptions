@@ -6,14 +6,14 @@ const getActivity = (activityId, accessToken) => {
   return fetch(url, {
     method: 'GET',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+      'Authorization': `Bearer ${accessToken}`,
     },
   })
     .then(res => {
       if (!res.ok) {
-        throw (`${res.status} ${res.statusText}`);
+        throw Error(`${res.status} ${res.statusText}`);
       }
       return res;
     })

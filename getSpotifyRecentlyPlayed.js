@@ -7,9 +7,9 @@ const getSpotifyRecentlyPlayed = (after, accessToken) => {
   return fetch(url, {
     method: 'GET',
     headers: {
-      Accept: 'application/json',
+      'Accept': 'application/json',
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${accessToken}`,
+      'Authorization': `Bearer ${accessToken}`,
     },
   })
     .then(res => res.json())

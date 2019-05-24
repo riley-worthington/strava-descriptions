@@ -7,5 +7,5 @@ module.exports = {
   SPOTIFY_AUTHORIZATION: process.env.SPOTIFY_AUTHORIZATION,
   DARKSKY_KEY: process.env.DARKSKY_KEY,
   DATABASE_URL: process.env.DATABASE_URL,
-  PORT: process.env.PORT
+  PORT: process.env.PORT,
 };

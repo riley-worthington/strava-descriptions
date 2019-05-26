@@ -46,7 +46,9 @@ async function handleWebhookEvent(objectId, ownerId) {
   // Spotify
   const spotifyToken = await spotifyTokenPromise;
   const epochEndTimeMS = epochStartTimeMS + (elapsedTime * 1000);
-  const spotifyTracksPromise = getSpotifyTracks(spotifyToken, epochStartTimeMS, epochEndTimeMS);
+  const spotifyTracksPromise = (spotifyToken)
+    ? getSpotifyTracks(spotifyToken, epochStartTimeMS, epochEndTimeMS)
+    : Promise.resolve(null);
 
   const [weather, tracks] = await Promise.all([weatherPromise, spotifyTracksPromise]);
 

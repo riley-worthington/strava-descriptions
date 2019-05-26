@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const emoji = require('node-emoji');
+const cors = require('cors');
 
 const authorizeStrava = require('./authorizeStrava');
 const handleWebhookEvent = require('./handleWebhookEvent');
@@ -11,8 +12,7 @@ const { PORT } = require('./config');
 const app = express();
 
 app.use(bodyParser.json());
-
-app.get('/login', authorizeStrava);
+app.use(cors());
 
 app.get('/subscription', (req, res) => {
   const challenge = req.query['hub.challenge'];
@@ -34,6 +34,18 @@ app.post('/subscription', (req, res) => {
       .then(console.log(`Successfully updated description for activity ${objectId}`))
       .catch(error => console.log(error));
   }
+});
+
+
+app.post('/auth/strava', (req, res) => {
+  const { code } = req.body;
+  authorizeStrava(code)
+    .then(response => {
+      console.log('here', response);
+      return response;
+    })
+    .then(data => res.send(JSON.stringify(data)))
+    .catch(error => console.log(error));
 });
 
 app.post('/', (req, res) => {

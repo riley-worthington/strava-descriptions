@@ -12,7 +12,7 @@ const refreshSpotifyToken = (refreshToken, athleteId) => {
 
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization: `Basic ${SPOTIFY_AUTHORIZATION}`,
+    'Authorization': `Basic ${SPOTIFY_AUTHORIZATION}`,
   };
 
   const searchParams = new URLSearchParams();
@@ -47,7 +47,7 @@ const getSpotifyAccessToken = athleteId => {
   return db.query(queryString)
     .then(res => {
       const refreshToken = res.rows[0].spotify_refresh_token;
-      return refreshSpotifyToken(refreshToken, athleteId);
+      return refreshToken ? refreshSpotifyToken(refreshToken, athleteId) : null;
     })
     .catch(err => {
       console.log(`Problem connecting to Spotify (${err})`);

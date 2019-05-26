@@ -62,7 +62,7 @@ const buildDescription = ({ icon, temperature }, tracks) => {
   }
 
   let playlist = '';
-  if (tracks.length > 0) {
+  if (tracks !== null && tracks.length > 0) {
     playlist = makePlaylist(tracks);
   }
 

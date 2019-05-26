@@ -1,13 +1,35 @@
-const { STRAVA_CLIENT_ID } = require('./config');
+const fetch = require('node-fetch');
+const db = require('./db');
+const { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } = require('./config');
 
-const authorizeStrava = (req, res) => {
-  const scopes = 'activity:read_all,activity:write';
-  const clientId = STRAVA_CLIENT_ID;
-  const redirectURI = 'http://localhost';
+async function authorizeStrava(code) {
+  const url = `https://www.strava.com/oauth/token?client_id=${STRAVA_CLIENT_ID}&client_secret=${STRAVA_CLIENT_SECRET}&code=${code}&grant_type=authorization_code`;
 
-  const url = `https://www.strava.com/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURI(redirectURI)}&response_type=code&scope=${scopes}`;
+  const response = await fetch(url, {
+    method: 'post',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
+  console.log('DATA:', data);
 
-  res.redirect(url);
-};
+  const {
+    access_token: stravaAccessToken,
+    expires_at: expiresAt,
+    refresh_token: refreshToken,
+    athlete,
+  } = data;
+  const athleteID = athlete.id;
+
+  const queryString = `INSERT INTO auth(strava_athlete_id, strava_access_token, strava_expires_at, strava_refresh_token) VALUES (${athleteID}, '${stravaAccessToken}', ${expiresAt}, '${refreshToken}')`;
+
+  await db.query(queryString);
+
+  return {
+    stravaAccessToken,
+    athlete,
+  };
+}
 
 module.exports = authorizeStrava;

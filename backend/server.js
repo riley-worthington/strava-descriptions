@@ -8,7 +8,6 @@ const handleWebhookEvent = require('./handleWebhookEvent');
 
 const { PORT } = require('./config');
 
-
 const app = express();
 
 app.use(bodyParser.json());
@@ -40,10 +39,6 @@ app.post('/subscription', (req, res) => {
 app.post('/auth/strava', (req, res) => {
   const { code } = req.body;
   authorizeStrava(code)
-    .then(response => {
-      console.log('here', response);
-      return response;
-    })
     .then(data => res.send(JSON.stringify(data)))
     .catch(error => console.log(error));
 });

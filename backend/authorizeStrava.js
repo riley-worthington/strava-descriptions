@@ -12,7 +12,6 @@ async function authorizeStrava(code) {
     },
   });
   const data = await response.json();
-  console.log('DATA:', data);
 
   const {
     access_token: stravaAccessToken,

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import history from '../history';
+import './LandingPage.css';
 
 class LandingPage extends Component {
   constructor() {
@@ -34,11 +35,14 @@ class LandingPage extends Component {
 
 
     return (
-      <div className="App">
-        <header className="App-header">
-          Strava description updater
+      <div className="landing-page">
+        <header className="landing-header">
+          <h1 className="site-title">TIEMPO</h1>
         </header>
         <main>
+          <div className="info">
+            <h2 className="tagline">Weather conditions and tunes,<br/>delivered to your Strava activities.</h2>
+          </div>
           <a href={`https://www.strava.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&response_type=code&scope=${scope}&state=${stateParam}`}>
             <img src={require("../btn_strava_connectwith_orange.svg")} alt="Connect with Strava"/>
           </a>

@@ -6,7 +6,7 @@ import LandingPage from './LandingPage/LandingPage';
 import PrivateRoute from './Auth/PrivateRoute';
 import StravaAuth from './Auth/StravaAuth';
 import Dashboard from './Dashboard/Dashboard';
-import './App.css';
+// import './App.css';
 
 
 class App extends Component {

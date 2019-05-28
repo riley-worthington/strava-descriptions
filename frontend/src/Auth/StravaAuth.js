@@ -29,15 +29,11 @@ class StravaAuth extends Component {
           history.push('/dashboard');
         })
         .catch(err => console.log(err));
+      } else {
+        console.log('invalid state param');
+        history.push('/');
       }
-    } else {
-      console.log('invalid state param');
-      history.push('/')
-    }
-  }
-
-  generateStateParam() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    } 
   }
 
   render() {

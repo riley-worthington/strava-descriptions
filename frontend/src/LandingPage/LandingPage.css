@@ -1,0 +1,40 @@
+.landing-page {
+  background-color: #000000;
+  color: #ffffff;
+  min-height: 100vh;
+  background-image: url('https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/female-jogger-running-on-rainy-night-in-the-city-royalty-free-image-494996636-1548953568.jpg?resize=768:*');
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.landing-header {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.site-title {
+  font-size: 50px;
+  margin-left: 1em;
+  letter-spacing: 0.3em;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: auto 0;
+  height: 60vh;
+}
+
+.tagline {
+  font-size: 36px;
+  font-family: 'Roboto', sans-serif;
+  font-weight: normal;
+  text-align: left;
+}
+
+main {
+  text-align: center;
+}

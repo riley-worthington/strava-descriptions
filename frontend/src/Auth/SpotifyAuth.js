@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import history from '../history';
 import './StravaAuth.css';
-
-const API_URL = 'http://localhost:8000';
+import { API_URL } from '../config';
 
 class SpotifyAuth extends Component {
 

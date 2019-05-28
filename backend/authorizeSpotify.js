@@ -8,7 +8,7 @@ async function authorizeSpotify(athleteID, code, redirectURI) {
 
     const data = {
       grant_type: 'authorization_code',
-      code: code,
+      code,
       redirect_uri: redirectURI,
     };
 

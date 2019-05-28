@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import history from '../history';
 import './StravaAuth.css';
-
-const API_URL = 'http://localhost:8000';
+import { API_URL } from '../config';
 
 class StravaAuth extends Component {
 
@@ -42,7 +41,7 @@ class StravaAuth extends Component {
     return (
       <div className="auth-loading-page">
         <h1 className="authorizing">Authorizing Strava</h1>
-        <div class="lds-dual-ring"></div>
+        <div className="lds-dual-ring"></div>
       </div>
     );
   }

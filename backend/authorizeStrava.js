@@ -24,7 +24,15 @@ async function authorizeStrava(code) {
 
     const queryString = `INSERT INTO auth(strava_athlete_id, strava_access_token, strava_expires_at, strava_refresh_token) VALUES (${athleteID}, '${stravaAccessToken}', ${expiresAt}, '${refreshToken}')`;
 
-    await db.query(queryString);
+    try {
+      await db.query(queryString);
+    } catch (error) {
+      if (error.code === '23505') {
+        console.log('Athlete already in database.');
+      } else {
+        console.log(error);
+      }
+    }
 
     return {
       stravaAccessToken,

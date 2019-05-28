@@ -46,6 +46,9 @@ class LandingPage extends Component {
           <a href={`https://www.strava.com/oauth/authorize?client_id=${clientID}&redirect_uri=${redirectURI}&response_type=code&scope=${scope}&state=${stateParam}`}>
             <img src={require("../btn_strava_connectwith_orange.svg")} alt="Connect with Strava"/>
           </a>
+          <footer>
+            <img src={require('./api_logo_cptblWith_strava_horiz_light.svg')} alt="Compatible with Strava" className='api-logo' />
+          </footer>
         </main>
       </div>
     );

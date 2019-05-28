@@ -4,7 +4,7 @@ import './StravaAuth.css';
 
 const API_URL = 'http://localhost:8000';
 
-class StravaAuth extends Component {
+class SpotifyAuth extends Component {
 
   componentDidMount() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -13,26 +13,30 @@ class StravaAuth extends Component {
     if (code) {
       const stateParam = urlParams.get('state');
       const sessionState = sessionStorage.getItem('stateParam');
-      if (sessionState === stateParam) {
+      const athlete = JSON.parse(localStorage.getItem('athlete'));
+
+      if (sessionState === stateParam && athlete != null) {
+        const athleteID = athlete.id;
         // fetch to backend for token
-        fetch(`${API_URL}/auth/strava`, {
+        fetch(`${API_URL}/auth/spotify`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            code: code,
+            athleteID,
+            code,
+            redirectURI: 'http://localhost:3000/auth/spotify',
           })
         })
         .then(res => res.json())
         .then(res => {
-          const { athlete, stravaAccessToken } = res;
-          localStorage.setItem('athlete', JSON.stringify(athlete));
-          localStorage.setItem('stravaAccessToken', JSON.stringify(stravaAccessToken));
+          const { spotifyAccessToken } = res;
+          localStorage.setItem('spotifyAccessToken', JSON.stringify(spotifyAccessToken));
           history.push('/dashboard');
         })
         .catch(err => console.log(err));
       } else {
         console.log('invalid state param');
-        history.push('/');
+        history.push('/dashboard');
       }
     }
   }
@@ -41,11 +45,11 @@ class StravaAuth extends Component {
 
     return (
       <div className="auth-loading-page">
-        <h1 className="authorizing">Authorizing Strava</h1>
-        <div class="lds-dual-ring"></div>
+        <h1 className="authorizing">Authorizing Spotify</h1>
+        <div className="lds-dual-ring"></div>
       </div>
     );
   }
 }
 
-export default StravaAuth;
+export default SpotifyAuth;

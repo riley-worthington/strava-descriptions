@@ -38,3 +38,11 @@
 main {
   text-align: center;
 }
+
+footer {
+  text-align: right;
+}
+
+.api-logo {
+  width: 10em;
+}

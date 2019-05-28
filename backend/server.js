@@ -4,6 +4,7 @@ const emoji = require('node-emoji');
 const cors = require('cors');
 
 const authorizeStrava = require('./authorizeStrava');
+const authorizeSpotify = require('./authorizeSpotify');
 const handleWebhookEvent = require('./handleWebhookEvent');
 
 const { PORT } = require('./config');
@@ -39,6 +40,13 @@ app.post('/subscription', (req, res) => {
 app.post('/auth/strava', (req, res) => {
   const { code } = req.body;
   authorizeStrava(code)
+    .then(data => res.send(JSON.stringify(data)))
+    .catch(error => console.log(error));
+});
+
+app.post('/auth/spotify', (req, res) => {
+  const { athleteID, code, redirectURI } = req.body;
+  authorizeSpotify(athleteID, code, redirectURI)
     .then(data => res.send(JSON.stringify(data)))
     .catch(error => console.log(error));
 });

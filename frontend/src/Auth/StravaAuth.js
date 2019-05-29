@@ -28,7 +28,10 @@ class StravaAuth extends Component {
           localStorage.setItem('stravaAccessToken', JSON.stringify(stravaAccessToken));
           history.push('/dashboard');
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          console.log(err);
+          history.push('/');
+        });
       } else {
         console.log('invalid state param');
         history.push('/');

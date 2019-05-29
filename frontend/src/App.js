@@ -7,6 +7,7 @@ import PrivateRoute from './Auth/PrivateRoute';
 import StravaAuth from './Auth/StravaAuth';
 import SpotifyAuth from './Auth/SpotifyAuth';
 import Dashboard from './Dashboard/Dashboard';
+import Setup from './Setup/Setup';
 // import './App.css';
 
 
@@ -17,6 +18,7 @@ class App extends Component {
         <Fragment>
           <Route exact path={`/`} component={LandingPage} />
           <PrivateRoute path={`/dashboard`} component={Dashboard} />
+          <PrivateRoute path={'/setup'} component={Setup} />
           <Route path={`/auth/strava`} component={StravaAuth} />
           <PrivateRoute path={'/auth/spotify'} component={SpotifyAuth} />
         </Fragment>

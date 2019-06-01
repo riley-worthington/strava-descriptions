@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import history from '../history';
 import './StravaAuth.css';
 import { API_URL } from '../config';
+import BallLoader from '../BallLoader/BallLoader';
+
 
 class SpotifyAuth extends Component {
 
@@ -44,8 +46,8 @@ class SpotifyAuth extends Component {
 
     return (
       <div className="auth-loading-page">
+        <BallLoader id='spotify'/>
         <h1 className="authorizing">Authorizing Spotify</h1>
-        <div className="lds-dual-ring"></div>
       </div>
     );
   }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import history from '../history';
 import './StravaAuth.css';
 import { API_URL } from '../config';
+import BallLoader from '../BallLoader/BallLoader';
 
 class StravaAuth extends Component {
 
@@ -47,8 +48,8 @@ class StravaAuth extends Component {
 
     return (
       <div className="auth-loading-page">
+        <BallLoader id='strava'/>
         <h1 className="authorizing">Authorizing Strava</h1>
-        <div className="lds-dual-ring"></div>
       </div>
     );
   }

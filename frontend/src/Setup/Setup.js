@@ -87,7 +87,7 @@ class Setup extends Component {
         <div className='prompt-box'>
           <p className='prompt'>What information should Tiempo put in your activity descriptions?</p>
           <span className='more-info' data-tip={infoMessage}>How does this work?</span>
-          <ReactTooltip className='tooltip' place='top' effect='solid'/>
+          <ReactTooltip className='tooltip' place='top' effect='solid' event='click' globalEventOff='click'/>
         </div>
         <div className='box'>
           <form className='tiempo-options'>

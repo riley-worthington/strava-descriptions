@@ -1,8 +1,6 @@
 .auth-loading-page{
   height: 100vh;
   text-align: center;
-  background-color: #000000;
-  color: #ffffff;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -21,8 +19,8 @@
   height: 46px;
   margin: 1px;
   border-radius: 50%;
-  border: 5px solid #ffffff;
-  border-color: #ffffff transparent #ffffff transparent;
+  border: 5px solid #000000;
+  border-color: #000000 transparent #000000 transparent;
   animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {
@@ -37,4 +35,5 @@
 .authorizing {
   margin-top: 0;
   margin-bottom: 15px;
+  font-size: 1.5rem;
 }

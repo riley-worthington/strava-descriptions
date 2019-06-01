@@ -77,7 +77,7 @@ class Setup extends Component {
       <p>Loading</p> :
       (<div className='setup-page'>
         <header>
-          <h1>TIEMPO</h1>
+          <h1 className='title'>TIEMPO</h1>
         </header>
         <div className='welcome-box'>
           <p className='welcome-message'>{`Welcome, ${athlete.firstname}!`}</p>

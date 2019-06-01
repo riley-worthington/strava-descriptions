@@ -46,3 +46,18 @@ footer {
 .api-logo {
   width: 10em;
 }
+
+.strava-auth-mobile {
+  display: none;
+}
+
+/* Conditionally render a mobile auth link */
+@media only screen and (max-width: 960px) {
+  .strava-auth-mobile {
+    display: unset;
+  }
+
+  .strava-auth-desktop {
+    display: none;
+  }
+}

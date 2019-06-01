@@ -23,10 +23,10 @@ class StravaAuth extends Component {
         })
         .then(res => res.json())
         .then(res => {
-          const { athlete, stravaAccessToken } = res;
+          const { stravaAccessToken, athlete, isFirstTime } = res;
           localStorage.setItem('athlete', JSON.stringify(athlete));
           localStorage.setItem('stravaAccessToken', JSON.stringify(stravaAccessToken));
-          history.push('/dashboard');
+          isFirstTime ? history.push('/setup') : history.push('/dashboard');
         })
         .catch(err => {
           console.log(err);

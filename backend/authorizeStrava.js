@@ -24,10 +24,12 @@ async function authorizeStrava(code) {
 
     const queryString = `INSERT INTO auth(strava_athlete_id, strava_access_token, strava_expires_at, strava_refresh_token) VALUES (${athleteID}, '${stravaAccessToken}', ${expiresAt}, '${refreshToken}')`;
 
+    let isFirstTime = true;
     try {
       await db.query(queryString);
     } catch (error) {
       if (error.code === '23505') {
+        isFirstTime = false;
         console.log('Athlete already in database.');
       } else {
         console.log(error);
@@ -37,6 +39,7 @@ async function authorizeStrava(code) {
     return {
       stravaAccessToken,
       athlete,
+      isFirstTime,
     };
   } catch (error) {
     console.log(error);

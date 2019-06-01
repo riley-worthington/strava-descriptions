@@ -6,6 +6,7 @@ const cors = require('cors');
 const authorizeStrava = require('./authorizeStrava');
 const authorizeSpotify = require('./authorizeSpotify');
 const handleWebhookEvent = require('./handleWebhookEvent');
+const updateSettings = require('./updateSettings');
 
 const { PORT } = require('./config');
 
@@ -48,6 +49,16 @@ app.post('/auth/spotify', (req, res) => {
   const { athleteID, code, redirectURI } = req.body;
   authorizeSpotify(athleteID, code, redirectURI)
     .then(data => res.send(JSON.stringify(data)))
+    .catch(error => console.log(error));
+});
+
+app.put('/settings', (req, res) => {
+  const { athleteID, wantsWeather, wantsMusic } = req.body;
+  updateSettings(athleteID, wantsWeather, wantsMusic)
+    .then(() => {
+      console.log('Updated settings');
+      res.sendStatus(200);
+    })
     .catch(error => console.log(error));
 });
 

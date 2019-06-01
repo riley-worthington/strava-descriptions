@@ -4,6 +4,8 @@ import CheckboxItem from './CheckboxItem';
 import history from '../history';
 import './Setup.css';
 import { API_URL, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
+import DarkSkyImg from './darksky.png';
+import SpotifyImg from './Spotify.png';
 
 class Setup extends Component {
   constructor() {
@@ -97,12 +99,12 @@ class Setup extends Component {
         <button className='submit-button' onClick={this.onSubmit}>Let's Go!</button>
         <div className='branding'>
           <a href='https://darksky.net/poweredby/' target="_blank" rel='noreferrer noopener'>
-            <img id='darksky' src={require('./darksky.png')} alt='Powered by DarkSky'/>
+            <img id='darksky' src={DarkSkyImg} alt='Powered by DarkSky'/>
           </a>
           <a href='https://www.spotify.com' id='spotify-link' target='_blank' rel='noreferrer noopener'>
             <div className='spotify-block'>
               <span className='provider'>Powered by</span>
-              <img id='spotify' src={require('./Spotify.png')} alt='Powered by Spotify'/>
+              <img id='spotify' src={SpotifyImg} alt='Powered by Spotify'/>
             </div>
           </a>
         </div>

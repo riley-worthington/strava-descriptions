@@ -8,6 +8,10 @@ class StravaAuth extends Component {
   componentDidMount() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
+    const error = urlParams.get('error');
+    if (error) {
+      history.push('/');
+    }
 
     if (code) {
       const stateParam = urlParams.get('state');

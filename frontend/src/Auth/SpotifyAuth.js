@@ -32,12 +32,12 @@ class SpotifyAuth extends Component {
         .then(res => {
           const { spotifyAccessToken } = res;
           localStorage.setItem('spotifyAccessToken', JSON.stringify(spotifyAccessToken));
-          history.push('/dashboard');
+          history.replace('/dashboard');
         })
         .catch(err => console.log(err));
       } else {
         console.log('invalid state param');
-        history.push('/dashboard');
+        history.replace('/dashboard');
       }
     }
   }

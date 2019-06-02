@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Sidebar from 'react-sidebar';
 import { SPOTIFY_REDIRECT_URI, SPOTIFY_CLIENT_ID } from '../config';
 import './Dashboard.css';
 
@@ -10,9 +11,11 @@ class Dashboard extends Component {
       athlete: null,
       stateParam: null,
       shouldUnderline: false,
+      sidebarOpen: false,
     };
 
     this.setUnderline = this.setUnderline.bind(this);
+    this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
 
   componentDidMount() {
@@ -26,6 +29,10 @@ class Dashboard extends Component {
 
   generateStateParam() {
     return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  }
+
+  onSetSidebarOpen(open) {
+    this.setState({ sidebarOpen: open });
   }
 
   setUnderline() {
@@ -45,8 +52,7 @@ class Dashboard extends Component {
       <div className='dashboard'>
         <header className='top-bar'>
           <h1 className='title'>TIEMPO</h1>
-          {/* <h3 className='username underline'>{name}</h3> */}
-          <nav class="nav">
+          <nav className="nav">
             <ul>
                 <li onMouseEnter={this.setUnderline} onMouseLeave={this.setUnderline}>
                     <h3 className={`username underline${shouldUnderline ? ' hover': ''}`}>{name}</h3>
@@ -56,7 +62,42 @@ class Dashboard extends Component {
                     </ul>
                 </li>
             </ul>
-        </nav>
+          </nav>
+          <Sidebar
+            sidebar={
+              <div className='sidebar-content'>
+                <div className='sidebar-top'>
+                  <button class={`hamburger hamburger--spin-r${this.state.sidebarOpen ? ' is-active' : ''}`} type="button" onClick={() => this.onSetSidebarOpen(false)}>
+                    <span class="hamburger-box">
+                      <span class="hamburger-inner"></span>
+                    </span>
+                  </button>
+                  <h3 className='username'>{name}</h3>
+                </div>
+                <nav className='sidebar-nav'>
+                  <ul>
+                      <li><a href="/settings">Settings</a></li>
+                      <li><a href="/logout">Log out</a></li>
+                  </ul>
+                </nav>
+              </div>
+            }
+            open={this.state.sidebarOpen}
+            onSetOpen={this.onSetSidebarOpen}
+            styles={{ sidebar: { background: "white" } }}
+            defaultSidebarWidth={0}
+            pullRight={true}
+            sidebarId='mySidebar'
+          >
+            <div className='sidebar-top-nav'>
+              <h1 className='title'>TIEMPO</h1>
+              <button class="hamburger hamburger--spin-r" type="button" onClick={() => this.onSetSidebarOpen(true)}>
+                <span class="hamburger-box">
+                  <span class="hamburger-inner"></span>
+                </span>
+              </button>
+            </div>
+          </Sidebar>
         </header>
       </div>
     );

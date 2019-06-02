@@ -11,7 +11,7 @@ class StravaAuth extends Component {
     const code = urlParams.get('code');
     const error = urlParams.get('error');
     if (error) {
-      history.push('/');
+      history.replace('/');
     }
 
     if (code) {
@@ -31,15 +31,15 @@ class StravaAuth extends Component {
           const { stravaAccessToken, athlete, isFirstTime } = res;
           localStorage.setItem('athlete', JSON.stringify(athlete));
           localStorage.setItem('stravaAccessToken', JSON.stringify(stravaAccessToken));
-          isFirstTime ? history.push('/setup') : history.push('/dashboard');
+          isFirstTime ? history.replace('/setup') : history.replace('/dashboard');
         })
         .catch(err => {
           console.log(err);
-          history.push('/');
+          history.replace('/');
         });
       } else {
         console.log('invalid state param');
-        history.push('/');
+        history.replace('/');
       }
     }
   }

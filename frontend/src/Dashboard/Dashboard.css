@@ -1,10 +1,10 @@
-.top-bar {
+.top-bar-desktop {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.title {
+.dashboard .title {
   margin-left: 1em;
   margin-right: 1em;
 }
@@ -127,119 +127,230 @@
   background-color: transparent;
   border: 0;
   margin: 0;
-  overflow: visible; }
-  .hamburger:hover {
-    opacity: 0.7; }
-  .hamburger.is-active:hover {
-    opacity: 0.7; }
-  .hamburger.is-active .hamburger-inner,
-  .hamburger.is-active .hamburger-inner::before,
-  .hamburger.is-active .hamburger-inner::after {
-    background-color: #000; }
+  overflow: visible;
+}
+
+.hamburger:hover {
+  opacity: 0.7;
+}
+
+.hamburger.is-active:hover {
+  opacity: 0.7;
+}
+
+.hamburger.is-active .hamburger-inner,
+.hamburger.is-active .hamburger-inner::before,
+.hamburger.is-active .hamburger-inner::after {
+  background-color: #000;
+}
 
 .hamburger-box {
   width: 40px;
   height: 24px;
   display: inline-block;
-  position: relative; }
+  position: relative;
+}
 
 .hamburger-inner {
   display: block;
   top: 50%;
-  margin-top: -2px; }
-  .hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
-    width: 40px;
-    height: 4px;
-    background-color: #000;
-    border-radius: 4px;
-    position: absolute;
-    transition-property: transform;
-    transition-duration: 0.15s;
-    transition-timing-function: ease; }
-  .hamburger-inner::before, .hamburger-inner::after {
-    content: "";
-    display: block; }
-  .hamburger-inner::before {
-    top: -10px; }
-  .hamburger-inner::after {
-    bottom: -10px; }
+  margin-top: -2px;
+}
 
-/*
-   * Squeeze
-   */
+.hamburger-inner, .hamburger-inner::before, .hamburger-inner::after {
+  width: 40px;
+  height: 4px;
+  background-color: #000;
+  border-radius: 4px;
+  position: absolute;
+  transition-property: transform;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+.hamburger-inner::before, .hamburger-inner::after {
+  content: "";
+  display: block;
+}
+
+.hamburger-inner::before {
+  top: -10px;
+}
+
+.hamburger-inner::after {
+  bottom: -10px;
+}
+
+/* Squeeze */
 .hamburger--squeeze .hamburger-inner {
   transition-duration: 0.075s;
-  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
-  .hamburger--squeeze .hamburger-inner::before {
-    transition: top 0.075s 0.12s ease, opacity 0.075s ease; }
-  .hamburger--squeeze .hamburger-inner::after {
-    transition: bottom 0.075s 0.12s ease, transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.hamburger--squeeze .hamburger-inner::before {
+  transition: top 0.075s 0.12s ease, opacity 0.075s ease;
+}
+
+.hamburger--squeeze .hamburger-inner::after {
+  transition: bottom 0.075s 0.12s ease, transform 0.075s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
 
 .hamburger--squeeze.is-active .hamburger-inner {
   transform: rotate(45deg);
   transition-delay: 0.12s;
-  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
-  .hamburger--squeeze.is-active .hamburger-inner::before {
-    top: 0;
-    opacity: 0;
-    transition: top 0.075s ease, opacity 0.075s 0.12s ease; }
-  .hamburger--squeeze.is-active .hamburger-inner::after {
-    bottom: 0;
-    transform: rotate(-90deg);
-    transition: bottom 0.075s ease, transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1); }
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
 
-    /*
-   * Spin Reverse
-   */
+.hamburger--squeeze.is-active .hamburger-inner::before {
+  top: 0;
+  opacity: 0;
+  transition: top 0.075s ease, opacity 0.075s 0.12s ease;
+}
+
+.hamburger--squeeze.is-active .hamburger-inner::after {
+  bottom: 0;
+  transform: rotate(-90deg);
+  transition: bottom 0.075s ease, transform 0.075s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Spin Reverse */
 .hamburger--spin-r .hamburger-inner {
   transition-duration: 0.22s;
-  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19); }
-  .hamburger--spin-r .hamburger-inner::before {
-    transition: top 0.1s 0.25s ease-in, opacity 0.1s ease-in; }
-  .hamburger--spin-r .hamburger-inner::after {
-    transition: bottom 0.1s 0.25s ease-in, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.hamburger--spin-r .hamburger-inner::before {
+  transition: top 0.1s 0.25s ease-in, opacity 0.1s ease-in;
+}
+
+.hamburger--spin-r .hamburger-inner::after {
+  transition: bottom 0.1s 0.25s ease-in, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
 
 .hamburger--spin-r.is-active .hamburger-inner {
   transform: rotate(-225deg);
   transition-delay: 0.12s;
-  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
-  .hamburger--spin-r.is-active .hamburger-inner::before {
-    top: 0;
-    opacity: 0;
-    transition: top 0.1s ease-out, opacity 0.1s 0.12s ease-out; }
-  .hamburger--spin-r.is-active .hamburger-inner::after {
-    bottom: 0;
-    transform: rotate(90deg);
-    transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1); }
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.hamburger--spin-r.is-active .hamburger-inner::before {
+  top: 0;
+  opacity: 0;
+  transition: top 0.1s ease-out, opacity 0.1s 0.12s ease-out;
+}
+
+.hamburger--spin-r.is-active .hamburger-inner::after {
+  bottom: 0;
+  transform: rotate(90deg);
+  transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+/* Spin */
+.hamburger--spin .hamburger-inner {
+  transition-duration: 0.22s;
+  transition-timing-function: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.hamburger--spin .hamburger-inner::before {
+  transition: top 0.1s 0.25s ease-in, opacity 0.1s ease-in;
+}
+
+.hamburger--spin .hamburger-inner::after {
+  transition: bottom 0.1s 0.25s ease-in, transform 0.22s cubic-bezier(0.55, 0.055, 0.675, 0.19);
+}
+
+.hamburger--spin.is-active .hamburger-inner {
+  transform: rotate(225deg);
+  transition-delay: 0.12s;
+  transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.hamburger--spin.is-active .hamburger-inner::before {
+  top: 0;
+  opacity: 0;
+  transition: top 0.1s ease-out, opacity 0.1s 0.12s ease-out;
+}
+
+.hamburger--spin.is-active .hamburger-inner::after {
+  bottom: 0;
+  transform: rotate(-90deg);
+  transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+
+.icons {
+  margin: 50px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#sun-face {
+  margin-right: 20px;
+  width: 6em;
+}
+
+#plus-sign {
+  font-size: 3em;
+}
+
+#spotify-logo {
+  margin-left: 20px;
+  padding: 0 .5em;
+  width: 5em;
+
+}
+
+.message {
+  text-align: center;
+}
+
+.settings-link {
+  color: #000;
+  text-decoration: underline;
+}
 
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
+  .dashboard .sidebar-top-nav .title {
+    font-size: 2.3rem;
+  }
+
   #mySidebar {
     min-width: 66%;
   }
+}
 
+/* Mobile and Tablet Styles */
+@media only screen and (max-width: 960px) {
+
+  .filler {
+    width: 70px;
+    height: 1px;
+  }
 
   .sidebar-top-nav {
+    padding: 10px;
     display: flex;
+    flex-direction: row-reverse;
     justify-content: space-between;
     align-items: center;
     height: 4rem;
   }
 
-  .sidebar-top-nav .title {
-    margin: .35rem 0 .35rem 20px;
-    padding: 0;
-    font-size: 2.3rem !important;
+  .dashboard .sidebar-top-nav .title {
+    margin: .35rem 0;
     display: unset;
   }
 
-  .title {
+  .desktop-stuff {
     display: none;
   }
 
   .sidebar-top {
+    padding-top: 10px;
     height: 4rem;
     display: flex;
+    flex-direction: row-reverse;
     align-items: center;
     justify-content: space-between;
   }
@@ -254,7 +365,8 @@
     list-style: none;
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
+    align-items: flex-start;
+    padding-left: 0;
   }
 
   .sidebar-nav a {
@@ -264,17 +376,31 @@
     color:#000;
     text-decoration: none;
     font-size: 1.5em;
-    /* border-left:1px solid #595959; */
+  }
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+  .dashboard .sidebar-top-nav .title {
+    font-size: 3rem;
+  }
+
+  #mySidebar {
+    min-width: 33%;
   }
 }
 
 /* Desktop styles */
 @media only screen and (min-width: 961px) {
-  .hamburger {
+  #mySidebar {
     display: none;
   }
 
-  .sidebar-top-nav {
+  .top-bar-mobile {
+    display: none;
+  }
+
+  div[role=navigation] {
     display: none;
   }
 

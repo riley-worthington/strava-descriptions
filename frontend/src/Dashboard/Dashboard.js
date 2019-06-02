@@ -48,57 +48,93 @@ class Dashboard extends Component {
 
     const name = athlete ? athlete.firstname : '';
 
-    return (
-      <div className='dashboard'>
-        <header className='top-bar'>
+    const sidebarContent = (
+      <div className='sidebar-content'>
+        <div className='sidebar-top'>
+          <button className={`hamburger hamburger--spin${this.state.sidebarOpen ? ' is-active' : ''}`} type="button" onClick={() => this.onSetSidebarOpen(false)}>
+            <span className="hamburger-box">
+              <span className="hamburger-inner"></span>
+            </span>
+          </button>
+          <h3 className='username'>{name}</h3>
+        </div>
+        <nav className='sidebar-nav'>
+          <ul>
+              <li><a href="/settings">Settings</a></li>
+              <li><a href="/logout">Log out</a></li>
+          </ul>
+        </nav>
+      </div>
+    );
+
+    const mobileHeader = (
+      <header className='top-bar-mobile'>
+        <div className='sidebar-top-nav'>
+          <div className='filler'></div>
           <h1 className='title'>TIEMPO</h1>
-          <nav className="nav">
-            <ul>
-                <li onMouseEnter={this.setUnderline} onMouseLeave={this.setUnderline}>
-                    <h3 className={`username underline${shouldUnderline ? ' hover': ''}`}>{name}</h3>
-                    <ul>
-                        <li><a href="/settings">Settings</a></li>
-                        <li><a href="/logout">Log out</a></li>
-                    </ul>
-                </li>
-            </ul>
-          </nav>
-          <Sidebar
-            sidebar={
-              <div className='sidebar-content'>
-                <div className='sidebar-top'>
-                  <button class={`hamburger hamburger--spin-r${this.state.sidebarOpen ? ' is-active' : ''}`} type="button" onClick={() => this.onSetSidebarOpen(false)}>
-                    <span class="hamburger-box">
-                      <span class="hamburger-inner"></span>
-                    </span>
-                  </button>
-                  <h3 className='username'>{name}</h3>
-                </div>
-                <nav className='sidebar-nav'>
+          <button className="hamburger hamburger--spin" type="button" onClick={() => this.onSetSidebarOpen(true)}>
+            <span className="hamburger-box">
+              <span className="hamburger-inner"></span>
+            </span>
+          </button>
+        </div>
+      </header>
+    );
+
+    const desktopHeader = (
+      <header className='top-bar-desktop'>
+        <h1 className='title'>TIEMPO</h1>
+        <nav className="nav">
+          <ul>
+              <li onMouseEnter={this.setUnderline} onMouseLeave={this.setUnderline}>
+                  <h3 className={`username underline${shouldUnderline ? ' hover': ''}`}>{name}</h3>
                   <ul>
                       <li><a href="/settings">Settings</a></li>
                       <li><a href="/logout">Log out</a></li>
                   </ul>
-                </nav>
-              </div>
-            }
+              </li>
+          </ul>
+        </nav>
+      </header>
+    );
+
+    const bodyContent = (
+      <div className='dashboard-body'>
+        <div className='icons'>
+          <span>
+            <img id='sun-face' src={require('./sun.png')} alt='Sun' />
+          </span>
+          <span id='plus-sign'>+</span>
+          <span>
+            <img id='spotify-logo' src={require('./Spotify_Icon_RGB_Green.png')} alt='Spotify Logo' />
+          </span>
+        </div>
+        <div className='message'>
+          <p>You're good to go!</p>
+          <p>Tiempo will sync <b>weather</b> and <b>music</b>.</p>
+          <a className='settings-link' href='/settings'>Settings</a>
+        </div>
+      </div>
+    );
+
+    return (
+      <div className='dashboard'>
+          <div className='desktop-stuff'>
+            {desktopHeader}
+            {bodyContent}
+          </div>
+          <Sidebar
+            sidebar={sidebarContent}
             open={this.state.sidebarOpen}
             onSetOpen={this.onSetSidebarOpen}
             styles={{ sidebar: { background: "white" } }}
             defaultSidebarWidth={0}
-            pullRight={true}
+            pullRight={false}
             sidebarId='mySidebar'
           >
-            <div className='sidebar-top-nav'>
-              <h1 className='title'>TIEMPO</h1>
-              <button class="hamburger hamburger--spin-r" type="button" onClick={() => this.onSetSidebarOpen(true)}>
-                <span class="hamburger-box">
-                  <span class="hamburger-inner"></span>
-                </span>
-              </button>
-            </div>
+            {mobileHeader}
+            {bodyContent}
           </Sidebar>
-        </header>
       </div>
     );
   }

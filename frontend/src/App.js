@@ -20,6 +20,7 @@ class App extends Component {
           <Route exact path={`/`} component={LandingPage} />
           <PrivateRoute path={`/dashboard`} component={Dashboard} />
           <PrivateRoute path={'/setup'} component={Setup} />
+          <PrivateRoute path={'/settings'} component={Setup} />
           <Route path={`/auth/strava`} component={StravaAuth} />
           <PrivateRoute path={'/auth/spotify'} component={SpotifyAuth} />
           <Route path={'/logout'} component={Logout} />

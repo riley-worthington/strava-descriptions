@@ -1,6 +1,3 @@
-:root {
-  --main-color: #FC4C02;
-}
 
 .setup-page {
   display: flex;
@@ -58,7 +55,7 @@
 .welcome-message {
   font-size: 1.5rem;
   /* color: #fc4c02; */
-  color: var(--main-color);
+  color: var(--strava-orange);
 }
 
 .prompt {
@@ -98,7 +95,7 @@
 
 .submit-button {
   /* background-color: #fc4c02; */
-  background-color: var(--main-color);
+  background-color: var(--strava-orange);
   font-size: 1.3rem;
   font-weight: bold;
   color: white;

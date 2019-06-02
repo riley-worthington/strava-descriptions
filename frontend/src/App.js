@@ -8,7 +8,7 @@ import StravaAuth from './Auth/StravaAuth';
 import SpotifyAuth from './Auth/SpotifyAuth';
 import Dashboard from './Dashboard/Dashboard';
 import Setup from './Setup/Setup';
-// import './App.css';
+import './App.css';
 
 
 class App extends Component {

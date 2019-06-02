@@ -7,11 +7,12 @@
 }
 
 #spotify div {
-  background-color: #1DB954;
+  background-color: var(--spotify-green);
 }
 
 #strava div {
-  background-color: #FC4C02;
+  /* background-color: #FC4C02; */
+  background-color: var(--strava-orange));
 }
 
 .balls div {

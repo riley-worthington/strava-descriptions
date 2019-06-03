@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import history from '../history';
 import './StravaAuth.css';
-import { API_URL } from '../config';
+import { SPOTIFY_REDIRECT_URI, API_URL } from '../config';
 import BallLoader from '../BallLoader/BallLoader';
 
 
@@ -25,7 +25,7 @@ class SpotifyAuth extends Component {
           body: JSON.stringify({
             athleteID,
             code,
-            redirectURI: 'http://localhost:3000/auth/spotify',
+            redirectURI: SPOTIFY_REDIRECT_URI,
           })
         })
         .then(res => res.json())

@@ -10,6 +10,15 @@
   font-family: 'Roboto', sans-serif;
 }
 
+.loading-box {
+  height: 100vh;
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .title {
   font-size: 3rem;
   letter-spacing: 0.7rem;

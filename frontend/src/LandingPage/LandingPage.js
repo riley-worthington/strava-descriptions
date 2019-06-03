@@ -44,7 +44,7 @@ class LandingPage extends Component {
           <a className='strava-auth-desktop' href={`https://www.strava.com/oauth/authorize?client_id=${STRAVA_CLIENT_ID}&redirect_uri=${STRAVA_REDIRECT_URI}&response_type=code&scope=${scope}&state=${stateParam}`}>
             <img src={require("./btn_strava_connectwith_orange.svg")} alt="Connect with Strava"/>
           </a>
-          <a className='strava-auth-mobile' href={`https://www.strava.com/oauth/mobile/authorize?client_id=${STRAVA_CLIENT_ID}&redirect_uri=${STRAVA_REDIRECT_URI}&response_type=code&scope=${scope}&state=${stateParam}`}>
+          <a className='strava-auth-mobile' href={`https://www.strava.com/oauth/authorize?client_id=${STRAVA_CLIENT_ID}&redirect_uri=${STRAVA_REDIRECT_URI}&response_type=code&scope=${scope}&state=${stateParam}`}>
             <img src={require("./btn_strava_connectwith_orange.svg")} alt="Connect with Strava"/>
           </a>
           <footer>

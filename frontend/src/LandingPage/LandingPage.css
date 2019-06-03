@@ -1,22 +1,29 @@
 .landing-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #000000;
   color: #ffffff;
   min-height: 100vh;
   background-image: url('https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/female-jogger-running-on-rainy-night-in-the-city-royalty-free-image-494996636-1548953568.jpg?resize=768:*');
   background-size: cover;
   background-repeat: no-repeat;
+  background-position: center center;
+  overflow: hidden;
 }
 
 .landing-header {
   display: flex;
   justify-content: flex-start;
+  width: 100vw;
 }
 
 .site-title {
-  font-size: 50px;
-  margin-left: 1em;
-  letter-spacing: 0.3em;
+  font-size: 3rem;
+  letter-spacing: 0.7rem;
+  padding-left: 0.7rem;
   font-family: 'Montserrat', sans-serif;
+  margin-left: 2rem;
 }
 
 .info {
@@ -24,12 +31,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: auto 0;
-  height: 60vh;
+  margin: auto 20px;
+  height: 50vh;
 }
 
 .tagline {
-  font-size: 36px;
+  font-size: 1.5em;
   font-family: 'Roboto', sans-serif;
   font-weight: normal;
   text-align: left;
@@ -37,27 +44,40 @@
 
 main {
   text-align: center;
+  flex: 1 0 auto;
 }
 
 footer {
-  text-align: right;
+  width: 100vw;
+  display: flex;
+  justify-content: flex-end;
+  flex-shrink: 0;
 }
 
 .api-logo {
   width: 10em;
 }
 
-.strava-auth-mobile {
-  display: none;
-}
 
 /* Conditionally render a mobile auth link */
-@media only screen and (max-width: 960px) {
-  .strava-auth-mobile {
-    display: unset;
+@media only screen and (max-width: 400px) {
+  .landing-header {
+    justify-content: center;
   }
 
-  .strava-auth-desktop {
-    display: none;
+  .site-title {
+    margin-left: 0;
+  }
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+
+}
+
+/* Desktop Styles */
+@media only screen and (min-width: 961px) {
+  .site-title {
+    font-size: 4rem;
   }
 }

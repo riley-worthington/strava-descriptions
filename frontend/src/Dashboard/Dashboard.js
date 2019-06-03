@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import Sidebar from 'react-sidebar';
-import { SPOTIFY_REDIRECT_URI, SPOTIFY_CLIENT_ID } from '../config';
 import './Dashboard.css';
 
 class Dashboard extends Component {
@@ -43,8 +42,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { athlete, stateParam, shouldUnderline } = this.state;
-    const scope = 'user-read-recently-played';
+    const { athlete, shouldUnderline } = this.state;
 
     const name = athlete ? athlete.firstname : '';
 

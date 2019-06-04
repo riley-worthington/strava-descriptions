@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import history from '../history';
 import './LandingPage.css';
 import { STRAVA_REDIRECT_URI, STRAVA_CLIENT_ID } from '../config';
@@ -19,6 +20,8 @@ class LandingPage extends Component {
     } else {
       const stateParam = this.generateStateParam();
       sessionStorage.setItem('stateParam', stateParam);
+      // Cookies for iOS Safari Private
+      Cookies.set('stateParam', stateParam);
       this.setState({ stateParam });
     }
   }

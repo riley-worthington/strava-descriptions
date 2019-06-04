@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import Cookies from 'js-cookie';
 import ReactTooltip from 'react-tooltip';
 import CheckboxItem from './CheckboxItem';
 import BallLoader from '../BallLoader/BallLoader';
@@ -50,6 +51,8 @@ class Setup extends Component {
     const stravaAthleteID = athlete.id;
     const stateParam = this.generateStateParam();
     sessionStorage.setItem('stateParam', stateParam);
+    Cookies.remove('stateParam');
+    Cookies.set('stateParam', stateParam);
     const scope = 'user-read-recently-played';
 
     // Talk to Tiempo database

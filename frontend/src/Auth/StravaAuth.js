@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import history from '../history';
 import './StravaAuth.css';
 import { API_URL } from '../config';
@@ -16,7 +17,8 @@ class StravaAuth extends Component {
 
     if (code) {
       const stateParam = urlParams.get('state');
-      const sessionState = sessionStorage.getItem('stateParam');
+      const sessionState = sessionStorage.getItem('stateParam') || Cookies.get('stateParam');
+      console.log(stateParam, sessionState);
       if (sessionState === stateParam) {
         // fetch to backend for token
         fetch(`${API_URL}/auth/strava`, {

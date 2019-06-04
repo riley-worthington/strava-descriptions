@@ -89,8 +89,9 @@
 .nav li ul a {
     border:none;
 }
-.nav li ul a:hover {
-    font-weight: bold;
+
+.link:hover {
+  text-shadow: 0 0 0 #000, 0 0 0 #000;
 }
 
 .nav li ul {

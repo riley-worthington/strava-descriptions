@@ -114,8 +114,8 @@ class Dashboard extends Component {
               <li onMouseEnter={this.setUnderline} onMouseLeave={this.setUnderline}>
                   <h3 className={`username underline${shouldUnderline ? ' hover': ''}`}>{name}</h3>
                   <ul>
-                      <li><a href="/settings">Settings</a></li>
-                      <li><a href="/logout">Log out</a></li>
+                      <li><a className='link' href='/settings' title='Settings'>Settings</a></li>
+                      <li><a className='link' href='/logout' title='Log-out'>Log out</a></li>
                   </ul>
               </li>
           </ul>

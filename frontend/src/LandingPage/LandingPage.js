@@ -16,7 +16,7 @@ class LandingPage extends Component {
   componentDidMount() {
     const athlete = localStorage.getItem('athlete');
     if (athlete) {
-      history.push('/dashboard');
+      history.replace('/dashboard');
     } else {
       const stateParam = this.generateStateParam();
       sessionStorage.setItem('stateParam', stateParam);

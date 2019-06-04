@@ -7,6 +7,7 @@ const authorizeStrava = require('./authorizeStrava');
 const authorizeSpotify = require('./authorizeSpotify');
 const handleWebhookEvent = require('./handleWebhookEvent');
 const updateSettings = require('./updateSettings');
+const getSettings = require('./getSettings');
 
 const { PORT } = require('./config');
 
@@ -52,12 +53,22 @@ app.post('/auth/spotify', (req, res) => {
     .catch(error => console.log(error));
 });
 
+// TODO: Change this to PUT /settings/:id
 app.put('/settings', (req, res) => {
   const { athleteID, wantsWeather, wantsMusic } = req.body;
   updateSettings(athleteID, wantsWeather, wantsMusic)
     .then(() => {
       console.log('Updated settings');
       res.sendStatus(200);
+    })
+    .catch(error => console.log(error));
+});
+
+app.get('/settings/:id', (req, res) => {
+  const athleteID = req.params.id;
+  getSettings(athleteID)
+    .then(data => {
+      res.send(JSON.stringify(data));
     })
     .catch(error => console.log(error));
 });

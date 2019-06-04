@@ -1,0 +1,38 @@
+
+.icons {
+  margin: 50px 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.spacer {
+  width: 20px;
+  height: 1px;
+}
+
+#sun-face {
+  width: 6em;
+}
+
+#plus-sign {
+  font-size: 3em;
+}
+
+#spotify-logo {
+  padding: 0 .5em;
+  width: 5em;
+}
+
+.message {
+  text-align: center;
+}
+
+.message.no-images {
+  margin-top: 30vh;
+}
+
+.settings-link {
+  color: #000;
+  text-decoration: underline;
+}

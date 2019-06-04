@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import Sidebar from 'react-sidebar';
+import BallLoader from '../BallLoader/BallLoader';
+import UserSelectedSettings from './UserSelectedSettings';
 import './Dashboard.css';
+import { API_URL } from '../config';
 
 class Dashboard extends Component {
   constructor() {
@@ -11,6 +14,9 @@ class Dashboard extends Component {
       stateParam: null,
       shouldUnderline: false,
       sidebarOpen: false,
+      wantsWeather: null,
+      wantsMusic: null,
+      isLoading: true,
     };
 
     this.setUnderline = this.setUnderline.bind(this);
@@ -21,9 +27,30 @@ class Dashboard extends Component {
     const athlete = JSON.parse(localStorage.getItem('athlete'));
     const stateParam = this.generateStateParam();
     sessionStorage.setItem('stateParam', stateParam);
-    console.log(athlete, stateParam);
 
     this.setState({ athlete, stateParam });
+
+    // Fetch settings from backend
+    const athleteID = athlete.id;
+    console.log(athleteID);
+    fetch(`${API_URL}/settings/${athleteID}`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+    })
+      .then(res => res.json())
+      .then(res => {
+        const { wantsWeather, wantsMusic } = res;
+        console.log(wantsWeather, wantsMusic);
+        this.setState({
+          wantsWeather,
+          wantsMusic,
+          isLoading: false,
+        });
+      })
+      .catch(error => console.log(error));
   }
 
   generateStateParam() {
@@ -42,7 +69,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { athlete, shouldUnderline } = this.state;
+    const { athlete, shouldUnderline, isLoading, wantsWeather, wantsMusic } = this.state;
 
     const name = athlete ? athlete.firstname : '';
 
@@ -96,24 +123,12 @@ class Dashboard extends Component {
       </header>
     );
 
-    const bodyContent = (
-      <div className='dashboard-body'>
-        <div className='icons'>
-          <span>
-            <img id='sun-face' src={require('./sun.png')} alt='Sun' />
-          </span>
-          <span id='plus-sign'>+</span>
-          <span>
-            <img id='spotify-logo' src={require('./Spotify_Icon_RGB_Green.png')} alt='Spotify Logo' />
-          </span>
+    const bodyContent = isLoading
+      ? <div className='loading-box'>
+          <BallLoader id='black'/>
         </div>
-        <div className='message'>
-          <p>You're good to go!</p>
-          <p>Tiempo will sync <b>weather</b> and <b>music</b>.</p>
-          <a className='settings-link' href='/settings'>Settings</a>
-        </div>
-      </div>
-    );
+      : <UserSelectedSettings wantsWeather={wantsWeather} wantsMusic={wantsMusic}/>
+      ;
 
     return (
       <div className='dashboard'>

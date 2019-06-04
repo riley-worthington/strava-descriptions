@@ -278,36 +278,12 @@
   transition: bottom 0.1s ease-out, transform 0.22s 0.12s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
-.icons {
-  margin: 50px 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#sun-face {
-  margin-right: 20px;
-  width: 6em;
-}
-
-#plus-sign {
-  font-size: 3em;
-}
-
-#spotify-logo {
-  margin-left: 20px;
-  padding: 0 .5em;
-  width: 5em;
-
-}
-
-.message {
+.loading-box {
   text-align: center;
-}
-
-.settings-link {
-  color: #000;
-  text-decoration: underline;
+  position: absolute;
+  top: 50%;
+  bottom: 50%;
+  width: 100%;
 }
 
 /* Mobile Styles */

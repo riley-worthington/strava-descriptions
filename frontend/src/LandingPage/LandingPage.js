@@ -14,7 +14,6 @@ class LandingPage extends Component {
 
   componentDidMount() {
     const athlete = localStorage.getItem('athlete');
-    console.log(athlete);
     if (athlete) {
       history.push('/dashboard');
     } else {

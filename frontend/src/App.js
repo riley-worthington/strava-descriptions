@@ -17,11 +17,11 @@ class App extends Component {
     return (
       <Router history={history}>
         <Fragment>
-          <Route exact path={`/`} component={LandingPage} />
-          <PrivateRoute path={`/dashboard`} component={Dashboard} />
+          <Route exact path={'/'} component={LandingPage} />
+          <PrivateRoute path={'/dashboard'} component={Dashboard} />
           <PrivateRoute path={'/setup'} component={Setup} />
           <PrivateRoute path={'/settings'} component={Setup} />
-          <Route path={`/auth/strava`} component={StravaAuth} />
+          <Route path={'/auth/strava'} component={StravaAuth} />
           <PrivateRoute path={'/auth/spotify'} component={SpotifyAuth} />
           <Route path={'/logout'} component={Logout} />
         </Fragment>

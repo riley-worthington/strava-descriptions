@@ -5,7 +5,7 @@ import './UserSelectedSettings.css';
 const UserSelectedSettings = ({ wantsWeather, wantsMusic }) => {
   if (wantsWeather && wantsMusic) {
     return (
-      <div className='dashboard-body'>
+      <div className='dashboard-body fade-in'>
         <div className='icons'>
           <span>
             <div className='icon-container'>
@@ -33,7 +33,9 @@ const UserSelectedSettings = ({ wantsWeather, wantsMusic }) => {
       <div className='dashboard-body'>
         <div className='icons'>
           <span>
-            <img id='sun-face' src={require('./sun.png')} alt='Sun' />
+            <div className='icon-container'>
+              <ImageLoader src={require('./sun.png')} alt='Sun' id='sun-face' />
+            </div>
           </span>
         </div>
         <div className='message'>
@@ -48,7 +50,9 @@ const UserSelectedSettings = ({ wantsWeather, wantsMusic }) => {
       <div className='dashboard-body'>
         <div className='icons'>
           <span>
-            <img id='spotify-logo' src={require('./Spotify_Icon_RGB_Green.png')} alt='Spotify Logo' />
+            <div className='icon-container'>
+              <ImageLoader src={require('./Spotify_Icon_RGB_Green.png')} alt='Spotify Logo' id='spotify-logo' />
+            </div>
           </span>
         </div>
         <div className='message'>

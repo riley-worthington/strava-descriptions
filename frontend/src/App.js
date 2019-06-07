@@ -3,12 +3,12 @@ import { Router, Route } from 'react-router-dom';
 import history from './history';
 
 import LandingPage from './LandingPage/LandingPage';
-import PrivateRoute from './Auth/PrivateRoute';
 import StravaAuth from './Auth/StravaAuth';
 import SpotifyAuth from './Auth/SpotifyAuth';
 import Dashboard from './Dashboard/Dashboard';
 import Setup from './Setup/Setup';
 import Logout from './Auth/Logout';
+import withAthlete from './Auth/withAthlete';
 import './App.css';
 
 
@@ -18,11 +18,11 @@ class App extends Component {
       <Router history={history}>
         <Fragment>
           <Route exact path={'/'} component={LandingPage} />
-          <PrivateRoute path={'/dashboard'} component={Dashboard} />
-          <PrivateRoute path={'/setup'} component={Setup} />
-          <PrivateRoute path={'/settings'} component={Setup} />
+          <Route path={'/dashboard'} component={withAthlete(Dashboard)} />
+          <Route path={'/setup'} component={withAthlete(Setup)} />
+          <Route path={'/settings'} component={withAthlete(Setup)} />
           <Route path={'/auth/strava'} component={StravaAuth} />
-          <PrivateRoute path={'/auth/spotify'} component={SpotifyAuth} />
+          <Route path={'/auth/spotify'} component={withAthlete(SpotifyAuth)} />
           <Route path={'/logout'} component={Logout} />
         </Fragment>
       </Router>

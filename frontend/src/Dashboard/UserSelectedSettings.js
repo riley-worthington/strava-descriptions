@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import ImageLoader from './ImageLoader';
 import './UserSelectedSettings.css';
 
@@ -32,15 +33,14 @@ const UserSelectedSettings = ({ wantsWeather, wantsMusic }) => {
   );
 
   const message = (() => {
-    if (wantsWeather && wantsMusic) {
-      return <p>Tiempo will sync <b>weather</b> and <b>music</b>.</p>
-    } else if (wantsWeather) {
-      return <p>Tiempo will sync <b>weather</b>.</p>
-    } else if (wantsMusic) {
-      return <p>Tiempo will sync <b>music</b>.</p>
-    } else {
-      return <p>Tiempo will not add to your descriptions.</p>
+    const key = `${wantsWeather}-${wantsMusic}`;
+    const messages = {
+      'true-true': <p>Tiempo will sync <b>weather</b> and <b>music</b>.</p>,
+      'true-false': <p>Tiempo will sync <b>weather</b>.</p>,
+      'false-true': <p>Tiempo will sync <b>music</b>.</p>,
+      'false-false': <p>Tiempo will not add to your descriptions.</p>,
     }
+    return messages[key];
   })();
 
 
@@ -54,6 +54,11 @@ const UserSelectedSettings = ({ wantsWeather, wantsMusic }) => {
       </div>
     </div>
   );
+}
+
+UserSelectedSettings.propTypes = {
+  wantsWeather: PropTypes.bool.isRequired,
+  wantsMusic: PropTypes.bool.isRequired,
 }
 
 export default UserSelectedSettings;

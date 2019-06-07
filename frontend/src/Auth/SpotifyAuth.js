@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import history from '../history';
 import './StravaAuth.css';
@@ -15,7 +16,7 @@ class SpotifyAuth extends Component {
     if (code) {
       const stateParam = urlParams.get('state');
       const sessionState = sessionStorage.getItem('stateParam') || Cookies.get('stateParam');
-      const athlete = JSON.parse(localStorage.getItem('athlete'));
+      const { athlete } = this.props;
 
       if (sessionState === stateParam && athlete != null) {
         const athleteID = athlete.id;
@@ -52,6 +53,12 @@ class SpotifyAuth extends Component {
       </div>
     );
   }
+}
+
+SpotifyAuth.propTypes = {
+  athlete: PropTypes.shape({
+    id: PropTypes.number,
+  })
 }
 
 export default SpotifyAuth;

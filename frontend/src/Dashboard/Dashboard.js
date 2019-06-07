@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Sidebar from 'react-sidebar';
 import BallLoader from '../BallLoader/BallLoader';
 import UserSelectedSettings from './UserSelectedSettings';
@@ -6,13 +7,13 @@ import Dropdown from './Dropdown';
 import Hamburger from '../widgets/Hamburger';
 import './Dashboard.css';
 import { API_URL } from '../config';
+import { generateRandomString } from '../helpers';
 
 class Dashboard extends Component {
   constructor() {
     super();
 
     this.state = {
-      athlete: null,
       stateParam: null,
       sidebarOpen: false,
       wantsWeather: null,
@@ -24,13 +25,12 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
-    const athlete = JSON.parse(localStorage.getItem('athlete'));
-    const stateParam = this.generateStateParam();
+    const stateParam = generateRandomString(16);
     sessionStorage.setItem('stateParam', stateParam);
-
-    this.setState({ athlete, stateParam });
+    this.setState({ stateParam });
 
     // Fetch settings from backend
+    const { athlete } = this.props;
     const athleteID = athlete.id;
     fetch(`${API_URL}/settings/${athleteID}`, {
       method: 'GET',
@@ -51,18 +51,15 @@ class Dashboard extends Component {
       .catch(error => console.log(error));
   }
 
-  generateStateParam() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  }
-
   onSetSidebarOpen(open) {
     this.setState({ sidebarOpen: open });
   }
 
   render() {
-    const { athlete, isLoading, wantsWeather, wantsMusic } = this.state;
+    const { athlete } = this.props;
+    const { isLoading, wantsWeather, wantsMusic } = this.state;
 
-    const name = athlete ? athlete.firstname : '';
+    const name = athlete.firstname;
 
     const sidebarContent = (
       <div className='sidebar-content'>
@@ -135,6 +132,12 @@ class Dashboard extends Component {
       </div>
     );
   }
+}
+
+Dashboard.propTypes = {
+  athlete: PropTypes.shape({
+    id: PropTypes.number,
+  })
 }
 
 export default Dashboard;

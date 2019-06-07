@@ -1,4 +1,5 @@
 import React, { Component, Fragment } from 'react';
+import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import ReactTooltip from 'react-tooltip';
 import CheckboxItem from './CheckboxItem';
@@ -16,7 +17,6 @@ class Setup extends Component {
     this.state = {
       isWeatherSelected: true,
       isSpotifySelected: true,
-      athlete: null,
       isLoading: true,
       isUpdatingSettings: false,
       imagesLoaded: 0,
@@ -35,9 +35,7 @@ class Setup extends Component {
   }
 
   componentDidMount() {
-    const athlete = JSON.parse(localStorage.getItem('athlete'));
     this.setState({
-      athlete,
       isLoading: false,
     })
 
@@ -69,7 +67,8 @@ class Setup extends Component {
 
   async onSubmit(event) {
     event.preventDefault();
-    const { athlete, isWeatherSelected, isSpotifySelected } = this.state;
+    const { athlete } = this.props;
+    const { isWeatherSelected, isSpotifySelected } = this.state;
     const stravaAthleteID = athlete.id;
     const stateParam = generateRandomString(16);
     sessionStorage.setItem('stateParam', stateParam);
@@ -98,7 +97,8 @@ class Setup extends Component {
 
   render() {
     const infoMessage = 'Whenever you upload an activity to Strava, Tiempo will collect weather data and recently played Spotify history. It will then automatically update the description with no action required on your end.';
-    const { isLoading, isUpdatingSettings, athlete, images, imagesLoaded } = this.state;
+    const { athlete } = this.props;
+    const { isLoading, isUpdatingSettings, images, imagesLoaded } = this.state;
     const waiting = isLoading  || isUpdatingSettings || imagesLoaded < images.length;
 
     return(
@@ -148,6 +148,12 @@ class Setup extends Component {
       </div>
     );
   }
+}
+
+Setup.propTypes = {
+  athlete: PropTypes.shape({
+    id: PropTypes.number,
+  })
 }
 
 export default Setup;

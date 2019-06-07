@@ -8,7 +8,7 @@ const BallLoader = ({ id }) => {
       <div></div>
       <div></div>
     </div>
-  )
+  );
 }
 
 export default BallLoader;

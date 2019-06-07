@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
 import Cookies from 'js-cookie';
 import history from '../history';
+
 import './LandingPage.css';
 import { STRAVA_REDIRECT_URI, STRAVA_CLIENT_ID } from '../config';
+
+import { generateRandomString } from '../helpers';
 
 class LandingPage extends Component {
   constructor() {
@@ -18,17 +21,18 @@ class LandingPage extends Component {
     if (athlete) {
       history.replace('/dashboard');
     } else {
-      const stateParam = this.generateStateParam();
+      const stateParam = generateRandomString(16);
+      console.log('HI', stateParam);
       sessionStorage.setItem('stateParam', stateParam);
-      // Cookies for iOS Safari Private
+      // Cookies for browsers w/o sessionStorage support
       Cookies.set('stateParam', stateParam);
       this.setState({ stateParam });
     }
   }
 
-  generateStateParam() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
-  }
+  // generateStateParam() {
+  //   return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+  // }
 
   render() {
     const scope = 'activity:read_all,activity:write';

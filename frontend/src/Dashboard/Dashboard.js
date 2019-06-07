@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Sidebar from 'react-sidebar';
 import BallLoader from '../BallLoader/BallLoader';
 import UserSelectedSettings from './UserSelectedSettings';
+import Dropdown from './Dropdown';
+import Hamburger from '../widgets/Hamburger';
 import './Dashboard.css';
 import { API_URL } from '../config';
 
@@ -12,14 +14,12 @@ class Dashboard extends Component {
     this.state = {
       athlete: null,
       stateParam: null,
-      shouldUnderline: false,
       sidebarOpen: false,
       wantsWeather: null,
       wantsMusic: null,
       isLoading: true,
     };
 
-    this.setUnderline = this.setUnderline.bind(this);
     this.onSetSidebarOpen = this.onSetSidebarOpen.bind(this);
   }
 
@@ -32,7 +32,6 @@ class Dashboard extends Component {
 
     // Fetch settings from backend
     const athleteID = athlete.id;
-    console.log(athleteID);
     fetch(`${API_URL}/settings/${athleteID}`, {
       method: 'GET',
       headers: {
@@ -43,7 +42,6 @@ class Dashboard extends Component {
       .then(res => res.json())
       .then(res => {
         const { wantsWeather, wantsMusic } = res;
-        console.log(wantsWeather, wantsMusic);
         this.setState({
           wantsWeather,
           wantsMusic,
@@ -61,32 +59,25 @@ class Dashboard extends Component {
     this.setState({ sidebarOpen: open });
   }
 
-  setUnderline() {
-    console.log(this.state.shouldUnderline);
-    this.setState(state => ({
-      shouldUnderline: !state.shouldUnderline
-    }))
-  }
-
   render() {
-    const { athlete, shouldUnderline, isLoading, wantsWeather, wantsMusic } = this.state;
+    const { athlete, isLoading, wantsWeather, wantsMusic } = this.state;
 
     const name = athlete ? athlete.firstname : '';
 
     const sidebarContent = (
       <div className='sidebar-content'>
         <div className='sidebar-top'>
-          <button className={`hamburger hamburger--spin${this.state.sidebarOpen ? ' is-active' : ''}`} type="button" onClick={() => this.onSetSidebarOpen(false)}>
-            <span className="hamburger-box">
-              <span className="hamburger-inner"></span>
-            </span>
-          </button>
-          <h3 className='username'>{name}</h3>
+          <Hamburger
+            animation={'hamburger--spin'}
+            isActive={this.state.sidebarOpen}
+            onClick={() => this.onSetSidebarOpen(false)}
+          />
+          <h3 className='username no-mobile-highlight'>{name}</h3>
         </div>
         <nav className='sidebar-nav'>
           <ul>
-              <li><a href="/settings">Settings</a></li>
-              <li><a href="/logout">Log out</a></li>
+              <li><a href="/settings" className='no-mobile-highlight'>Settings</a></li>
+              <li><a href="/logout" className='no-mobile-highlight'>Log out</a></li>
           </ul>
         </nav>
       </div>
@@ -97,11 +88,10 @@ class Dashboard extends Component {
         <div className='sidebar-top-nav'>
           <div className='filler'></div>
           <h1 className='title'>TIEMPO</h1>
-          <button className="hamburger hamburger--spin" type="button" onClick={() => this.onSetSidebarOpen(true)}>
-            <span className="hamburger-box">
-              <span className="hamburger-inner"></span>
-            </span>
-          </button>
+          <Hamburger
+            animation={'hamburger--spin'}
+            onClick={() => this.onSetSidebarOpen(true)}
+          />
         </div>
       </header>
     );
@@ -109,17 +99,11 @@ class Dashboard extends Component {
     const desktopHeader = (
       <header className='top-bar-desktop'>
         <h1 className='title'>TIEMPO</h1>
-        <nav className="nav">
-          <ul>
-              <li onMouseEnter={this.setUnderline} onMouseLeave={this.setUnderline}>
-                  <h3 className={`username underline${shouldUnderline ? ' hover': ''}`}>{name}</h3>
-                  <ul>
-                      <li><a className='link' href='/settings' title='Settings'>Settings</a></li>
-                      <li><a className='link' href='/logout' title='Log-out'>Log out</a></li>
-                  </ul>
-              </li>
-          </ul>
-        </nav>
+        <Dropdown
+          name={name}
+          links={['/settings', '/logout']}
+          titles={['Settings', 'Log out']}
+        />
       </header>
     );
 

@@ -7,6 +7,8 @@ import history from '../history';
 import './Setup.css';
 import { API_URL, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
 
+import { generateRandomString } from '../helpers';
+
 class Setup extends Component {
   constructor() {
     super();
@@ -27,7 +29,6 @@ class Setup extends Component {
   }
 
   handleImageLoad() {
-    console.log('loaded')
     this.setState(state => ({
       imagesLoaded: state.imagesLoaded + 1
     }))
@@ -70,7 +71,7 @@ class Setup extends Component {
     event.preventDefault();
     const { athlete, isWeatherSelected, isSpotifySelected } = this.state;
     const stravaAthleteID = athlete.id;
-    const stateParam = this.generateStateParam();
+    const stateParam = generateRandomString(16);
     sessionStorage.setItem('stateParam', stateParam);
     Cookies.remove('stateParam');
     Cookies.set('stateParam', stateParam);
@@ -78,7 +79,7 @@ class Setup extends Component {
 
     // Talk to Tiempo database
     this.setState({ isUpdatingSettings: true });
-    const response = await fetch(`${API_URL}/settings`, {
+    await fetch(`${API_URL}/settings`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -87,19 +88,12 @@ class Setup extends Component {
         wantsMusic: isSpotifySelected,
       })
     });
-    console.log(response);
-    // this.setState({ isUpdatingSettings: false });
-
 
     if (isSpotifySelected) {
       window.location.assign(`https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${SPOTIFY_REDIRECT_URI}&scope=${scope}&state=${stateParam}`);
     } else {
       history.push('/dashboard');
     }
-  }
-
-  generateStateParam() {
-    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 
   render() {
@@ -111,8 +105,12 @@ class Setup extends Component {
       <div className='setup-page'>
       { waiting ?
         <div className='loading-box'>
-          <BallLoader id='black' />
-          { isUpdatingSettings && <h1 className="authorizing">Updating your settings</h1> }
+          { isUpdatingSettings && (
+            <Fragment>
+              <BallLoader id='black' />
+              <h1 className="authorizing">Updating your settings</h1>
+            </Fragment>
+          ) }
         </div>
           :
         (<Fragment>

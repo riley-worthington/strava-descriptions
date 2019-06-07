@@ -12,7 +12,6 @@ class ImageLoader extends Component {
   }
 
   handleImageLoad = () => {
-    console.log('loaded');
     this.setState({
       isLoaded: true
     })

@@ -14,10 +14,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-.wf-active {
+.wf-active, .wf-inactive {
   visibility: visible;
 }
-
 
 @keyframes fadein {
     from { opacity: 0; }
@@ -48,12 +47,18 @@ body {
     to   { opacity: 1; }
 }
 
+
+/* Top level classes */
 .fade-in {
   -webkit-animation: fadein 1s; /* Safari, Chrome and Opera > 12.1 */
      -moz-animation: fadein 1s; /* Firefox < 16 */
       -ms-animation: fadein 1s; /* Internet Explorer */
        -o-animation: fadein 1s; /* Opera < 12.1 */
           animation: fadein 1s;
+}
+
+.no-mobile-highlight {
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 code {

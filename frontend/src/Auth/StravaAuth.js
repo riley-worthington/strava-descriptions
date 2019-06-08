@@ -3,7 +3,7 @@ import Cookies from 'js-cookie';
 import history from '../history';
 import './StravaAuth.css';
 import { API_URL } from '../config';
-import BallLoader from '../BallLoader/BallLoader';
+import BallLoader from '../widgets/BallLoader';
 
 class StravaAuth extends Component {
 

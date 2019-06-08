@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import ReactTooltip from 'react-tooltip';
 import CheckboxItem from './CheckboxItem';
-import BallLoader from '../BallLoader/BallLoader';
+import BallLoader from '../widgets/BallLoader';
 import history from '../history';
 import './Setup.css';
 import { API_URL, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
@@ -67,11 +67,10 @@ class Setup extends Component {
 
     // Talk to Tiempo database
     this.setState({ isUpdatingSettings: true });
-    await fetch(`${API_URL}/settings`, {
+    await fetch(`${API_URL}/settings/${stravaAthleteID}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        athleteID: stravaAthleteID,
         wantsWeather: isWeatherSelected,
         wantsMusic: isSpotifySelected,
       })

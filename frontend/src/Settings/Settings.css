@@ -1,0 +1,26 @@
+.settings-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: .5rem;
+  color: black;
+  max-width: 700px;
+  margin: 0 auto;
+  font-family: 'Roboto', sans-serif;
+}
+
+
+button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+button:disabled:hover {
+  filter: none;
+}
+
+h2 {
+  font-family: 'Roboto', sans-serif;
+  font-size: 2rem;
+  font-weight: normal;
+}

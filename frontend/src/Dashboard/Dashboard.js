@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Sidebar from 'react-sidebar';
-import BallLoader from '../BallLoader/BallLoader';
+import BallLoader from '../widgets/BallLoader';
 import UserSelectedSettings from './UserSelectedSettings';
 import Dropdown from './Dropdown';
 import Hamburger from '../widgets/Hamburger';
@@ -57,7 +57,7 @@ class Dashboard extends Component {
   }
 
   render() {
-    const { athlete } = this.props;
+    const { athlete, imageSources } = this.props;
     const { isLoading, wantsWeather, wantsMusic } = this.state;
 
     const name = athlete.firstname;
@@ -84,12 +84,12 @@ class Dashboard extends Component {
     const mobileHeader = (
       <header className='top-bar-mobile'>
         <div className='sidebar-top-nav'>
-          <div className='filler'></div>
-          <h1 className='title'>TIEMPO</h1>
           <Hamburger
             animation={'hamburger--spin'}
             onClick={() => this.onSetSidebarOpen(true)}
           />
+          <h1 className='title'>TIEMPO</h1>
+          <div className='filler'></div>
         </div>
       </header>
     );
@@ -105,20 +105,16 @@ class Dashboard extends Component {
       </header>
     );
 
-    const UserSettings = withWaitForImages(UserSelectedSettings, ['sun', 'spotify-icon-green']);
+    // const UserSettings = withWaitForImages(UserSelectedSettings, ['sun', 'spotify-icon-green']);
     const bodyContent = isLoading
       ? <div className='loading-box'>
           <BallLoader id='black'/>
         </div>
-      : <UserSettings wantsWeather={wantsWeather} wantsMusic={wantsMusic}/>
+      : <UserSelectedSettings wantsWeather={wantsWeather} wantsMusic={wantsMusic} imageSources={imageSources}/>
       ;
 
     return (
       <div className='dashboard'>
-          <div className='desktop-stuff'>
-            {desktopHeader}
-            {bodyContent}
-          </div>
           <Sidebar
             sidebar={sidebarContent}
             open={this.state.sidebarOpen}
@@ -128,6 +124,7 @@ class Dashboard extends Component {
             pullRight={false}
             sidebarId='mySidebar'
           >
+            {desktopHeader}
             {mobileHeader}
             {bodyContent}
           </Sidebar>
@@ -142,4 +139,4 @@ Dashboard.propTypes = {
   })
 }
 
-export default Dashboard;
+export default withWaitForImages(Dashboard, ['sun', 'spotify-icon-green']);

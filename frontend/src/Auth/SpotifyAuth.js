@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import history from '../history';
 import './StravaAuth.css';
 import { SPOTIFY_REDIRECT_URI, API_URL } from '../config';
-import BallLoader from '../BallLoader/BallLoader';
+import BallLoader from '../widgets/BallLoader';
 
 
 class SpotifyAuth extends Component {

@@ -54,8 +54,9 @@ app.post('/auth/spotify', (req, res) => {
 });
 
 // TODO: Change this to PUT /settings/:id
-app.put('/settings', (req, res) => {
-  const { athleteID, wantsWeather, wantsMusic } = req.body;
+app.put('/settings/:id', (req, res) => {
+  const athleteID = req.params.id;
+  const { wantsWeather, wantsMusic } = req.body;
   updateSettings(athleteID, wantsWeather, wantsMusic)
     .then(() => {
       console.log('Updated settings');

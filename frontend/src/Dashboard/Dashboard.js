@@ -5,6 +5,7 @@ import BallLoader from '../BallLoader/BallLoader';
 import UserSelectedSettings from './UserSelectedSettings';
 import Dropdown from './Dropdown';
 import Hamburger from '../widgets/Hamburger';
+import withWaitForImages from '../images/withWaitForImages';
 import './Dashboard.css';
 import { API_URL } from '../config';
 import { generateRandomString } from '../helpers';
@@ -104,11 +105,12 @@ class Dashboard extends Component {
       </header>
     );
 
+    const UserSettings = withWaitForImages(UserSelectedSettings, ['sun', 'spotify-icon-green']);
     const bodyContent = isLoading
       ? <div className='loading-box'>
           <BallLoader id='black'/>
         </div>
-      : <UserSelectedSettings wantsWeather={wantsWeather} wantsMusic={wantsMusic}/>
+      : <UserSettings wantsWeather={wantsWeather} wantsMusic={wantsMusic}/>
       ;
 
     return (

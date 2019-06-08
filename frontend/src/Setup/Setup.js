@@ -9,6 +9,7 @@ import './Setup.css';
 import { API_URL, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
 
 import { generateRandomString } from '../helpers';
+import loadImages from '../images/loadImages';
 
 class Setup extends Component {
   constructor() {
@@ -19,19 +20,12 @@ class Setup extends Component {
       isSpotifySelected: true,
       isLoading: true,
       isUpdatingSettings: false,
-      imagesLoaded: 0,
-      images: [null, null],
+      imagesLoaded: false,
+      imageSources: null,
     };
 
     this.handleSelect = this.handleSelect.bind(this);
-    this.handleImageLoad = this.handleImageLoad.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  handleImageLoad() {
-    this.setState(state => ({
-      imagesLoaded: state.imagesLoaded + 1
-    }))
   }
 
   componentDidMount() {
@@ -39,18 +33,13 @@ class Setup extends Component {
       isLoading: false,
     })
 
-    const darksky = new Image();
-    darksky.onload = this.handleImageLoad;
-    darksky.src = require('./darksky.png');
-
-    const spotify = new Image();
-    spotify.onload = this.handleImageLoad;
-    spotify.src = require('./Spotify.png');
-
-
-    this.setState({
-      images: [darksky, spotify]
-    })
+    loadImages(['powered-by-dark-sky-black', 'spotify-logo-green'])
+      .then(sources => {
+        this.setState({
+          imagesLoaded: true,
+          imageSources: sources,
+        });
+      });
   }
 
   handleSelect(event) {
@@ -98,8 +87,8 @@ class Setup extends Component {
   render() {
     const infoMessage = 'Whenever you upload an activity to Strava, Tiempo will collect weather data and recently played Spotify history. It will then automatically update the description with no action required on your end.';
     const { athlete } = this.props;
-    const { isLoading, isUpdatingSettings, images, imagesLoaded } = this.state;
-    const waiting = isLoading  || isUpdatingSettings || imagesLoaded < images.length;
+    const { isLoading, isUpdatingSettings, imagesLoaded, imageSources } = this.state;
+    const waiting = isLoading  || isUpdatingSettings || !imagesLoaded;
 
     return(
       <div className='setup-page'>
@@ -135,12 +124,12 @@ class Setup extends Component {
           <button className='submit-button fade-in' onClick={this.onSubmit}>Let's Go!</button>
           <div className='branding fade-in'>
             <a href='https://darksky.net/poweredby/' target="_blank" rel='noreferrer noopener'>
-              <img id='darksky' src={images[0].src} alt='Powered by DarkSky' />
+              <img id='darksky' src={imageSources['powered-by-dark-sky-black']} alt='Powered by DarkSky' />
             </a>
             <a href='https://www.spotify.com' id='spotify-link' target='_blank' rel='noreferrer noopener'>
               <div className='spotify-block'>
                 <span className='provider'>Powered by</span>
-                <img id='spotify' src={images[1].src} alt='Powered by Spotify' />
+                <img id='spotify' src={imageSources['spotify-logo-green']} alt='Powered by Spotify' />
               </div>
             </a>
           </div>

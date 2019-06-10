@@ -41,4 +41,9 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  .page-site-title {
+    font-size: 2.5rem;
+    margin-left: 2rem;
+  }
 }

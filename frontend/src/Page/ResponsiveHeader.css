@@ -1,0 +1,38 @@
+.mobile-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.desktop-header {
+  display: none;
+}
+
+.page-site-title {
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: 0.7rem;
+  padding-left: 0.7rem;
+}
+
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
+
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+
+}
+
+/* Desktop styles */
+@media only screen and (min-width: 961px) {
+  .mobile-header {
+    display: none;
+  }
+
+  .desktop-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}

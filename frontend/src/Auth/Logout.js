@@ -1,13 +1,12 @@
 import React from 'react';
-import Cookies from 'js-cookie';
 import history from '../history';
+import { removeStoredStateParam } from './authHelpers';
 
 const Logout = () => {
   localStorage.removeItem('athlete');
   localStorage.removeItem('stravaAccessToken');
   localStorage.removeItem('spotifyAccessToken');
-  sessionStorage.removeItem('stateParam');
-  Cookies.remove('stateParam');
+  removeStoredStateParam();
   history.push('/');
   return (
     <div></div>

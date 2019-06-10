@@ -1,0 +1,36 @@
+.sidebar {
+  background: white;
+  min-width: 66vw;
+}
+
+.sidebar-nav ul {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  align-items: flex-start;
+  padding: 0;
+}
+
+.sidebar-nav a {
+  display:block;
+  margin:10px 20px;
+  line-height:1.3em;
+  color:#000;
+  text-decoration: none;
+  font-size: 1.5em;
+}
+
+.user-firstname {
+  margin-left: 25px;
+  margin-right: 25px;
+  color: var(--strava-orange);
+  font-weight: normal;
+  font-size: 1.5em;
+}
+
+/* Tablet Styles */
+@media only screen and (min-width: 401px) and (max-width: 960px) {
+  .sidebar {
+    min-width: 33vw;
+  }
+}

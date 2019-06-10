@@ -10,6 +10,7 @@ import Setup from './Setup/Setup';
 import Settings from './Settings/Settings';
 import Logout from './Auth/Logout';
 import withAthlete from './Auth/withAthlete';
+import TestPage from './Page/TestPage';
 import './App.css';
 
 
@@ -25,6 +26,7 @@ class App extends Component {
           <Route path={'/auth/strava'} component={StravaAuth} />
           <Route path={'/auth/spotify'} component={withAthlete(SpotifyAuth)} />
           <Route path={'/logout'} component={Logout} />
+          <Route path={'/sidebar'} component={withAthlete(TestPage)} />
         </Fragment>
       </Router>
     );

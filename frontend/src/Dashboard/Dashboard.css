@@ -1,106 +1,21 @@
-.top-bar-desktop {
-  display: none;
-}
-
-.top-bar-desktop .title {
-  margin-left: 1em;
-  margin-right: 1em;
-}
 
 
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
-  .sidebar-top-nav .title {
-    font-size: 2.3rem;
-  }
 
-  #mySidebar {
-    min-width: 66%;
-  }
 }
 
 /* Mobile and Tablet Styles */
 @media only screen and (max-width: 960px) {
 
-  .filler {
-    width: 70px;
-    height: 1px;
-  }
-
-  .sidebar-top-nav {
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    height: 4rem;
-  }
-
-  .sidebar-top-nav .title {
-    margin: .35rem 0;
-    display: unset;
-  }
-
-  .sidebar-top {
-    padding-top: 10px;
-    height: 4rem;
-    display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .username {
-    margin-left: 25px;
-    margin-right: 25px;
-    color: var(--strava-orange);
-  }
-
-  .sidebar-nav ul {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    padding-left: 0;
-  }
-
-  .sidebar-nav a {
-    display:block;
-    margin:10px 20px;
-    line-height:1.3em;
-    color:#000;
-    text-decoration: none;
-    font-size: 1.5em;
-  }
 }
 
 /* Tablet Styles */
 @media only screen and (min-width: 401px) and (max-width: 960px) {
-  .sidebar-top-nav .title {
-    font-size: 3rem;
-  }
 
-  #mySidebar {
-    min-width: 33%;
-  }
 }
 
 /* Desktop styles */
 @media only screen and (min-width: 961px) {
-  /* #mySidebar {
-    display: none;
-  } */
 
-  .top-bar-mobile {
-    display: none;
-  }
-
-  .top-bar-desktop {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  /* div[role=navigation] {
-    display: none;
-  } */
 }

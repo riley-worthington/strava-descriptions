@@ -5,6 +5,7 @@
 
 html {
   visibility: hidden;
+  overflow-x: hidden;
 }
 
 body {

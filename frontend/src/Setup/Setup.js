@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import Cookies from 'js-cookie';
 import ReactTooltip from 'react-tooltip';
 import CheckboxItem from './CheckboxItem';
 import BallLoader from '../widgets/BallLoader';
@@ -8,7 +7,7 @@ import history from '../history';
 import './Setup.css';
 import { API_URL, SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
 
-import { generateRandomString } from '../helpers';
+import { setNewStateParam } from '../Auth/authHelpers';
 import loadImages from '../images/loadImages';
 
 class Setup extends Component {
@@ -59,10 +58,7 @@ class Setup extends Component {
     const { athlete } = this.props;
     const { isWeatherSelected, isSpotifySelected } = this.state;
     const stravaAthleteID = athlete.id;
-    const stateParam = generateRandomString(16);
-    sessionStorage.setItem('stateParam', stateParam);
-    Cookies.remove('stateParam');
-    Cookies.set('stateParam', stateParam);
+    const stateParam = setNewStateParam();
     const scope = 'user-read-recently-played';
 
     // Talk to Tiempo database

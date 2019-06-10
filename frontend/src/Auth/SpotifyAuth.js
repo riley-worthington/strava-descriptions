@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import Cookies from 'js-cookie';
 import history from '../history';
 import './StravaAuth.css';
 import { SPOTIFY_REDIRECT_URI, API_URL } from '../config';
 import BallLoader from '../widgets/BallLoader';
+import { getStoredStateParam } from './authHelpers';
 
 
 class SpotifyAuth extends Component {
@@ -15,7 +15,7 @@ class SpotifyAuth extends Component {
 
     if (code) {
       const stateParam = urlParams.get('state');
-      const sessionState = sessionStorage.getItem('stateParam') || Cookies.get('stateParam');
+      const sessionState = getStoredStateParam();
       const { athlete } = this.props;
 
       if (sessionState === stateParam && athlete != null) {

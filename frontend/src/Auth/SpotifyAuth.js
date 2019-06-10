@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import history from '../history';
-import './StravaAuth.css';
 import { SPOTIFY_REDIRECT_URI, API_URL } from '../config';
 import BallLoader from '../widgets/BallLoader';
 import { getStoredStateParam } from './authHelpers';
+import './AuthScreen.css';
 
 
 class SpotifyAuth extends Component {

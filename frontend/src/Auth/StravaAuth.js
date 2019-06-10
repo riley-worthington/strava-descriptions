@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import history from '../history';
-import './StravaAuth.css';
 import { API_URL } from '../config';
 import BallLoader from '../widgets/BallLoader';
 import { getStoredStateParam } from './authHelpers';
+import './AuthScreen.css';
 
 class StravaAuth extends Component {
 

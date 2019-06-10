@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react';
+import React, { Fragment, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
 
@@ -12,46 +12,98 @@ import { setNewStateParam } from '../Auth/authHelpers';
 import { getAthleteSettings, updateAthleteSettings } from './athleteSettings';
 import './Settings.css';
 
+const initialState = {
+  isLoading: true,
+  isUpdatingSettings: false,
+  isWeatherSelected: true,
+  isMusicSelected: true,
+  isSpotifyAuthorized: false,
+  isSyncingWeather: null,
+  isSyncingMusic: null,
+  isError: false,
+}
+
+const settingsReducer = (state, action) => {
+  switch (action.type) {
+    case 'INITIALIZE_SETTINGS':
+      const { wantsWeather, wantsMusic, hasAuthorizedSpotify } = action.payload;
+      return {
+        ...state,
+        isWeatherSelected: wantsWeather,
+        isSyncingWeather: wantsWeather,
+        isMusicSelected: wantsMusic,
+        isSyncingMusic: wantsMusic,
+        isSpotifyAuthorized: hasAuthorizedSpotify,
+        isLoading: false,
+      }
+    case 'GET_SETTINGS_FAILURE':
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      }
+    case 'TOGGLE_WEATHER':
+      return {
+        ...state,
+        isWeatherSelected: !state.isWeatherSelected,
+      }
+    case 'TOGGLE_MUSIC':
+      return {
+        ...state,
+        isMusicSelected: !state.isMusicSelected,
+      }
+    case 'UPDATE_SETTINGS_INIT':
+      return {
+        ...state,
+        isUpdatingSettings: true,
+      }
+    case 'UPDATE_SETTINGS_SUCCESS':
+      return {
+        ...state,
+        isUpdatingSettings: false,
+      }
+    case 'UPDATE_SETTINGS_FAILURE':
+      return {
+        ...state,
+        isUpdatingSettings: false,
+      }
+    default:
+      return state;
+  }
+}
+
 const Settings = ({ athlete, imageSources }) => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [isUpdatingSettings, setIsUpdatingSettings] = useState(false);
-  const [isWeatherSelected, setIsWeatherSelected] = useState(null);
-  const [isSpotifySelected, setIsSpotifySelected] = useState(null);
-  const [isSpotifyAuthorized, setIsSpotifyAuthorized] = useState(false);
-  const [initialWeatherSelected, setInitialWeatherSelected] = useState(null);
-  const [initialSpotifySelected, setInitialSpotifySelected] = useState(null);
+  const athleteID = athlete.id;
+  const [state, dispatch] = useReducer(settingsReducer, initialState);
 
   useEffect(() => {
-    getAthleteSettings(athlete.id)
-      .then(settings => {
-        const {
-          wantsWeather,
-          wantsMusic,
-          hasAuthorizedSpotify,
-        } = settings;
-        setIsWeatherSelected(wantsWeather);
-        setInitialWeatherSelected(wantsWeather);
-        setIsSpotifySelected(wantsMusic);
-        setInitialSpotifySelected(wantsMusic);
-        setIsSpotifyAuthorized(hasAuthorizedSpotify);
-        setIsLoading(false);
-      })
-  }, [athlete.id]);
+    let didCancel = false;
+
+    getAthleteSettings(athleteID)
+      .then(settings => !didCancel && dispatch({ type: 'INITIALIZE_SETTINGS', payload: settings }))
+      .catch(err => !didCancel && dispatch({ type: 'GET_SETTINGS_FAILURE' }));
+
+    return () => {
+      didCancel = true;
+    };
+  }, [athleteID]);
 
   const toggleSelect = event => {
     if (event.target.id === 'weather') {
-      setIsWeatherSelected(state => !state);
+      dispatch({ type: 'TOGGLE_WEATHER' });
     } else if (event.target.id === 'spotify') {
-      setIsSpotifySelected(state => !state);
+      dispatch({ type: 'TOGGLE_MUSIC' });
     }
   }
 
   const onSubmit = event => {
+    const { isWeatherSelected, isMusicSelected, isSpotifyAuthorized } = state;
     event.preventDefault();
-    setIsUpdatingSettings(true);
-    updateAthleteSettings(athlete.id, isWeatherSelected, isSpotifySelected)
+    dispatch({ type: 'UPDATE_SETTINGS_INIT' });
+    updateAthleteSettings(athleteID, isWeatherSelected, isMusicSelected)
       .then(() => {
-        if (isSpotifySelected && !isSpotifyAuthorized) {
+        dispatch({ type: 'UPDATE_SETTINGS_SUCCESS' });
+        if (isMusicSelected && !isSpotifyAuthorized) {
           const stateParam = setNewStateParam();
           const scope = 'user-read-recently-played';
 
@@ -60,12 +112,25 @@ const Settings = ({ athlete, imageSources }) => {
           history.push('/dashboard');
         }
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        dispatch({ type: 'UPDATE_SETTINGS_FAILURE' });
+        console.log(err);
+      });
   }
 
   const infoMessage = 'Whenever you upload an activity to Strava, Tiempo will collect weather data and recently played Spotify history. It will then automatically update the description with no action required on your end.';
 
-  const shouldDisableButton = (initialWeatherSelected === isWeatherSelected) && (initialSpotifySelected === isSpotifySelected);
+  const {
+    isSyncingWeather,
+    isSyncingMusic,
+    isWeatherSelected,
+    isMusicSelected,
+    isLoading,
+    isUpdatingSettings,
+    isError,
+  } = state;
+
+  const shouldDisableButton = (isSyncingWeather === isWeatherSelected) && (isSyncingMusic === isMusicSelected);
 
   const outLinks = [
     {
@@ -78,26 +143,46 @@ const Settings = ({ athlete, imageSources }) => {
     },
   ];
 
+  let body;
+  if (isError) {
+    body = (
+      <div className='loading-box'>
+        <h3>Couldn't get settings.</h3>
+      </div>
+    );
+  } else if (isUpdatingSettings) {
+    body = (
+      <div className='loading-box'>
+        <BallLoader id='black'/>
+        <h3 className='authorizing'>Updating your settings</h3>
+      </div>
+    );
+  } else if (isLoading) {
+    body = (
+      <div className='loading-box'>
+        <BallLoader id='black'/>
+      </div>
+    );
+  } else {
+    body = (
+      <Fragment>
+        <h2 className='page-title'>Settings</h2>
+        <h3 className='setting-description'>What should Tiempo put in your descriptions?</h3>
+        <span className='more-info' data-tip={infoMessage}>How does this work?</span>
+        <ReactTooltip className='tooltip' place='top' effect='solid' event='click' globalEventOff='click'/>
+        <form className='tiempo-options'>
+          <CheckboxItem id='weather' text='Weather conditions' defaultChecked={isSyncingWeather} onChange={toggleSelect} />
+          <CheckboxItem id='spotify' text='Music you listened to' defaultChecked={isSyncingMusic} onChange={toggleSelect} />
+        </form>
+        <button className='submit-button' onClick={onSubmit} disabled={shouldDisableButton}>Save</button>
+      </Fragment>
+    );
+  }
+
   return (
     <Page athlete={athlete} outLinks={outLinks}>
       <div className='settings-page'>
-        {isLoading
-          ? <div className='loading-box'>
-              <BallLoader id='black'/>
-            </div>
-          : (
-            <Fragment>
-              <h2 className='page-title'>Settings</h2>
-              <h3 className='setting-description'>What should Tiempo put in your descriptions?</h3>
-              <span className='more-info' data-tip={infoMessage}>How does this work?</span>
-              <ReactTooltip className='tooltip' place='top' effect='solid' event='click' globalEventOff='click'/>
-              <form className='tiempo-options'>
-                <CheckboxItem id='weather' text='Weather conditions' defaultChecked={isWeatherSelected} onChange={toggleSelect} />
-                <CheckboxItem id='spotify' text='Music you listened to' defaultChecked={isSpotifySelected} onChange={toggleSelect} />
-              </form>
-              <button className='submit-button' onClick={onSubmit} disabled={shouldDisableButton}>Save</button>
-            </Fragment>
-          )}
+        {body}
       </div>
     </Page>
   );

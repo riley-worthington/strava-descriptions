@@ -28,9 +28,12 @@ const Page = ({ children, athlete, outLinks }) => {
       <ResponsiveHeader
         athleteName={athlete.firstname}
         navLinks={outLinks}
+        isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
-      {children}
+      <div className='child-content'>
+        {children}
+      </div>
     </Sidebar>
   );
 }

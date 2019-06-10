@@ -1,6 +1,13 @@
+
+/* Setting z-indexes to allow for sticky header */
 .sidebar {
   background: white;
   min-width: 66vw;
+  z-index: 3 !important;
+}
+
+.sidebar + div {
+  z-index: 2 !important;
 }
 
 .sidebar-nav ul {
@@ -26,6 +33,13 @@
   color: var(--strava-orange);
   font-weight: normal;
   font-size: 1.5em;
+}
+
+/* Mobile and Tablet Styles */
+@media only screen and (max-width: 960px) {
+  .child-content {
+    margin-top: 5em;
+  }
 }
 
 /* Tablet Styles */

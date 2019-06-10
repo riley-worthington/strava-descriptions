@@ -3,7 +3,7 @@ import Hamburger from '../widgets/Hamburger';
 import Dropdown from '../Dashboard/Dropdown';
 import './ResponsiveHeader.css';
 
-const ResponsiveHeader = ({ athleteName, navLinks, setIsSidebarOpen }) => {
+const ResponsiveHeader = ({ athleteName, navLinks, isSidebarOpen, setIsSidebarOpen }) => {
   const siteTitle = <h1 className='page-site-title'>TIEMPO</h1>;
   const links = navLinks.map(link => link.href);
   const titles = navLinks.map(link => link.title)

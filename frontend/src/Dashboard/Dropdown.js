@@ -1,48 +1,34 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import './Dropdown.css';
 
-class Dropdown extends Component {
-  constructor(props) {
-    super(props);
+const Dropdown = ({ name, links, titles }) => {
+  const [shouldUnderline, setShouldUnderline] = useState(false);
 
-    this.state = {
-      shouldUnderline: false,
-    }
-    this.setUnderline = this.setUnderline.bind(this);
+  const toggleUnderline = () => {
+    setShouldUnderline(state => !state);
   }
 
-  setUnderline() {
-    this.setState(state => ({
-      shouldUnderline: !state.shouldUnderline
-    }))
-  }
-
-  render() {
-    const { shouldUnderline } = this.state;
-    const { name, links, titles } = this.props;
-
-    return (
-      <nav className="nav">
-        <ul>
-            <li onMouseEnter={this.setUnderline} onMouseLeave={this.setUnderline}>
-                <h3 className={`username underline${shouldUnderline ? ' hover': ''}`}>{name}</h3>
-                <ul>
-                    {links.map((link, i) => {
-                      const title = titles[i];
-                      return (
-                        <li key={i}>
-                          <a className='link' href={link} title={title}>
-                            {title}
-                          </a>
-                        </li>
-                      );
-                    })}
-                </ul>
-            </li>
-        </ul>
-      </nav>
-    );
-  };
+  return (
+    <nav className="nav">
+      <ul>
+        <li onMouseEnter={toggleUnderline} onMouseLeave={toggleUnderline}>
+          <h3 className={`username underline${shouldUnderline ? ' hover' : ''}`}>{ name }</h3>
+          <ul>
+            {links.map((link, i) => {
+              const title = titles[i];
+              return (
+                <li key={i}>
+                  <a className='link' href={link} title={title}>
+                    { title }
+                  </a>
+                </li>
+              );
+            })}
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  );
 }
 
 export default Dropdown;

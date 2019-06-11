@@ -1,70 +1,96 @@
-import React, { Component } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Page from '../Page/Page';
 import BallLoader from '../widgets/BallLoader';
 import UserSelectedSettings from './UserSelectedSettings';
 import withWaitForImages from '../images/withWaitForImages';
-import './Dashboard.css';
 import { getAthleteSettings } from '../Settings/athleteSettings';
+import './Dashboard.css';
 
-class Dashboard extends Component {
-  constructor() {
-    super();
+const initialState = {
+  wantsWeather: null,
+  wantsMusic: null,
+  isLoading: true,
+  isError: false,
+}
 
-    this.state = {
-      wantsWeather: null,
-      wantsMusic: null,
-      isLoading: true,
-    };
-
+const dashboardReducer = (state, action) => {
+  switch (action.type) {
+    case 'INITIALIZE_SETTINGS':
+      const { wantsWeather, wantsMusic } = action.payload;
+      return {
+        ...state,
+        wantsWeather,
+        wantsMusic,
+        isLoading: false,
+      };
+    case 'GET_SETTINGS_FAILURE':
+      return {
+        ...state,
+        isLoading: false,
+        isError: true,
+      }
+    default:
+      return state;
   }
+}
 
-  componentDidMount() {
-    // Fetch settings from backend
-    const { athlete } = this.props;
-    const athleteID = athlete.id;
+const Dashboard = ({ athlete, imageSources }) => {
+  const athleteID = athlete.id;
+  const [state, dispatch] = useReducer(dashboardReducer, initialState);
+
+  useEffect(() => {
+    let didCancel = false;
+
     getAthleteSettings(athleteID)
-      .then(res => {
-        const { wantsWeather, wantsMusic } = res;
-        this.setState({
-          wantsWeather,
-          wantsMusic,
-          isLoading: false,
-        });
-      })
-      .catch(error => console.log(error));
-  }
+      .then(res => !didCancel && dispatch({ type: 'INITIALIZE_SETTINGS', payload: res }))
+      .catch(err => !didCancel && dispatch({ type: 'GET_SETTINGS_FAILURE' }));
 
-  render() {
-    const { athlete, imageSources } = this.props;
-    const { isLoading, wantsWeather, wantsMusic } = this.state;
+    return () => {
+      didCancel = true;
+    };
+  }, [athleteID]);
 
-    const outLinks = [
-      {
-        href: '/settings',
-        title: 'Settings',
-      },
-      {
-        href: '/logout',
-        title: 'Log out',
-      },
-    ];
+  const { wantsWeather, wantsMusic, isLoading, isError } = state;
+  const outLinks = [
+    {
+      href: '/settings',
+      title: 'Settings',
+    },
+    {
+      href: '/logout',
+      title: 'Log out',
+    },
+  ];
 
-    return (
-      <Page athlete={athlete} outLinks={outLinks}>
-        {isLoading
-          ? <div className='loading-box'>
-              <BallLoader id='black'/>
-            </div>
-          : <UserSelectedSettings
-              wantsWeather={wantsWeather}
-              wantsMusic={wantsMusic}
-              imageSources={imageSources}
-            />
-        }
-      </Page>
+  let body;
+  if (isLoading) {
+    body = (
+      <div className='loading-box'>
+        <BallLoader id='black'/>
+      </div>
+    );
+  } else if (isError) {
+    body = (
+      <div className='loading-box'>
+        <h3>Couldn't load information.</h3>
+      </div>
+    );
+  } else {
+    body = (
+      <UserSelectedSettings
+        wantsWeather={wantsWeather}
+        wantsMusic={wantsMusic}
+        imageSources={imageSources}
+      />
     );
   }
+
+  return (
+    <Page athlete={athlete} outLinks={outLinks}>
+      { body }
+    </Page>
+  );
 }
 
 Dashboard.propTypes = {

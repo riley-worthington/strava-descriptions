@@ -15,10 +15,10 @@ const ResponsiveHeader = ({ athleteName, navLinks, isSidebarOpen, setIsSidebarOp
           animation={'hamburger--spin'}
           onClick={() => setIsSidebarOpen(true)}
         />
-        {siteTitle}
+        { siteTitle }
       </header>
       <header className='desktop-header'>
-        {siteTitle}
+        { siteTitle }
         <Dropdown
           name={athleteName}
           links={links}

@@ -24,8 +24,8 @@ export const updateAthleteSettings = (athleteID, wantsWeather, wantsMusic) => {
       wantsMusic,
     })
   })
-    .then(res => {
-      return res;
-    })
-    .catch(err => console.log(err));
+    .catch(err => {
+      console.log(err);
+      throw Error('Failed to update athlete settings.');
+    });
 }

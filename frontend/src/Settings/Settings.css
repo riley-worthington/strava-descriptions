@@ -20,4 +20,5 @@
 
 .page-title {
   font-family: 'Roboto', sans-serif;
+  color: var(--strava-orange);
 }

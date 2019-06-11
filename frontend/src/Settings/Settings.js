@@ -1,15 +1,14 @@
 import React, { Fragment, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import ReactTooltip from 'react-tooltip';
-
 import CheckboxItem from '../Setup/CheckboxItem';
 import BallLoader from '../widgets/BallLoader';
 import Page from '../Page/Page';
 import history from '../history';
-import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
 import withWaitForImages from '../images/withWaitForImages';
 import { setNewStateParam } from '../Auth/authHelpers';
 import { getAthleteSettings, updateAthleteSettings } from './athleteSettings';
+import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
 import './Settings.css';
 
 const initialState = {
@@ -187,8 +186,6 @@ const Settings = ({ athlete, imageSources }) => {
     </Page>
   );
 }
-
-
 
 Settings.propTypes = {
   athlete: PropTypes.shape({

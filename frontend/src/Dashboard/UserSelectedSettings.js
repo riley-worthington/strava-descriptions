@@ -41,7 +41,6 @@ const UserSelectedSettings = ({ wantsWeather, wantsMusic, imageSources }) => {
     return messages[key];
   })();
 
-
   return (
     <div className='dashboard-body fade-in'>
       { icons }

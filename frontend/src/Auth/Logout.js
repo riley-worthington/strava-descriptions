@@ -1,4 +1,3 @@
-import React from 'react';
 import history from '../history';
 import { removeStoredStateParam } from './authHelpers';
 
@@ -8,9 +7,7 @@ const Logout = () => {
   localStorage.removeItem('spotifyAccessToken');
   removeStoredStateParam();
   history.push('/');
-  return (
-    <div></div>
-  );
+  return null;
 };
 
 export default Logout;

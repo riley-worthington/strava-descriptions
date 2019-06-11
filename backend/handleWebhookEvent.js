@@ -1,11 +1,12 @@
 const getActivity = require('./getActivity');
-const getStravaAccessToken = require('./getStravaAccessToken');
-const getSpotifyAccessToken = require('./getSpotifyAccessToken');
+const { isStravaTokenValid, refreshStravaToken } = require('./getStravaAccessToken');
+const refreshSpotifyToken = require('./refreshSpotifyToken');
 const getSpotifyRecentlyPlayed = require('./getSpotifyRecentlyPlayed');
 const getSongsPlayedDuringActivity = require('./getSongsPlayedDuringActivity');
 const getWeatherConditions = require('./getWeatherConditions');
 const buildDescription = require('./buildDescription');
 const updateDescription = require('./updateDescription');
+const getSettingsAndTokens = require('./getSettingsAndTokens');
 
 async function getSpotifyTracks(
   spotifyToken,
@@ -20,40 +21,69 @@ async function getSpotifyTracks(
   return tracks;
 }
 
-async function handleWebhookEvent(objectId, ownerId) {
-  const spotifyTokenPromise = getSpotifyAccessToken(ownerId);
+const handleWebhookEvent = async (activityID, athleteID) => {
+  try {
+    const userInfo = await getSettingsAndTokens(athleteID);
+    const {
+      strava_expires_at: stravaExpiresAt,
+      strava_refresh_token: stravaRefreshToken,
+      spotify_refresh_token: spotifyRefreshToken,
+      wants_weather: wantsWeather,
+      wants_music: wantsMusic,
+    } = userInfo;
+    let { strava_access_token: stravaAccessToken } = userInfo;
 
-  // Strava
-  const stravaToken = await getStravaAccessToken(ownerId);
-  const stravaActivity = await getActivity(objectId, stravaToken);
-  const {
-    start_latitude: startLatitude,
-    start_longitude: startLongitude,
-    start_date: startDate,
-    elapsed_time: elapsedTime,
-  } = stravaActivity;
-  const epochStartTimeMS = Date.parse(startDate);
-  const epochStartTime = Math.floor(epochStartTimeMS / 1000);
+    if (!wantsWeather && !wantsMusic) {
+      return Promise.resolve(`User doesn't want to sync weather or music.`);
+    }
 
-  // Weather
-  const weatherPromise = (startLatitude && startLongitude)
-    ? getWeatherConditions(startLatitude, startLongitude, epochStartTime)
-    : Promise.resolve({
-      icon: null,
-      temperature: null,
-    });
+    // Get a fresh Spotify token if they want music
+    const spotifyTokenPromise = wantsMusic
+      ? refreshSpotifyToken(spotifyRefreshToken, athleteID)
+      : Promise.resolve(null);
 
-  // Spotify
-  const spotifyToken = await spotifyTokenPromise;
-  const epochEndTimeMS = epochStartTimeMS + (elapsedTime * 1000);
-  const spotifyTracksPromise = (spotifyToken)
-    ? getSpotifyTracks(spotifyToken, epochStartTimeMS, epochEndTimeMS)
-    : Promise.resolve(null);
+    // Refresh Strava token if necessary and get the activity
+    if (!isStravaTokenValid(stravaExpiresAt)) {
+      stravaAccessToken = await refreshStravaToken(stravaRefreshToken, athleteID);
+    }
+    const stravaActivity = await getActivity(activityID, stravaAccessToken);
+    const {
+      start_latitude: startLatitude,
+      start_longitude: startLongitude,
+      start_date: startDate,
+      elapsed_time: elapsedTime,
+    } = stravaActivity;
+    if (!startDate) {
+      return Promise.resolve(`Activity doesn't have a start time. Can't get weather/music info.`);
+    }
+    const epochStartTimeMS = Date.parse(startDate);
+    const epochStartTime = Math.floor(epochStartTimeMS / 1000);
 
-  const [weather, tracks] = await Promise.all([weatherPromise, spotifyTracksPromise]);
+    // Weather
+    if ((!startLatitude || !startLongitude) && wantsWeather) {
+      console.log(`User wants weather but this activity doesn't have a location.`);
+    }
+    const weatherPromise = (wantsWeather && startLatitude && startLongitude)
+      ? getWeatherConditions(startLatitude, startLongitude, epochStartTime)
+      : Promise.resolve({
+        icon: null,
+        temperature: null,
+      });
 
-  const updateString = buildDescription(weather, tracks);
-  return updateDescription(objectId, stravaToken, updateString);
-}
+    // Spotify
+    const spotifyToken = await spotifyTokenPromise;
+    const epochEndTimeMS = epochStartTimeMS + (elapsedTime * 1000);
+    const spotifyTracksPromise = (wantsMusic && spotifyToken)
+      ? getSpotifyTracks(spotifyToken, epochStartTimeMS, epochEndTimeMS)
+      : Promise.resolve(null);
+
+    const [weather, tracks] = await Promise.all([weatherPromise, spotifyTracksPromise]);
+
+    const updateString = buildDescription(weather, tracks);
+    return updateDescription(activityID, stravaAccessToken, updateString);
+  } catch (error) {
+    return Promise.reject(Error(error));
+  }
+};
 
 module.exports = handleWebhookEvent;

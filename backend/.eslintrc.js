@@ -16,5 +16,6 @@ module.exports = {
     'no-console': 0,
     'arrow-parens': [2, "as-needed"],
     'quote-props': [2, "consistent-as-needed"],
+    'quotes': [2, "single", {"avoidEscape": true, "allowTemplateLiterals": true}]
   },
 };

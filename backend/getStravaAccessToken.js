@@ -25,6 +25,11 @@ const refreshStravaToken = (refreshToken, athleteId) => {
     .catch(err => console.log(`Couldn't refresh Strava token. ${err}`));
 };
 
+const isStravaTokenValid = expireTime => {
+  // Note: expireTime is in seconds
+  const currentTime = Math.floor(Date.now() / 1000);
+  return (expireTime > currentTime);
+};
 
 const getStravaAccessToken = athleteId => {
   const queryString = `SELECT strava_access_token, strava_expires_at, strava_refresh_token FROM auth WHERE strava_athlete_id = ${athleteId};`;
@@ -44,4 +49,8 @@ const getStravaAccessToken = athleteId => {
 };
 
 
-module.exports = getStravaAccessToken;
+module.exports = {
+  getStravaAccessToken,
+  isStravaTokenValid,
+  refreshStravaToken,
+};

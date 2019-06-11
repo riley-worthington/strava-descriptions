@@ -33,8 +33,12 @@ app.post('/subscription', (req, res) => {
 
   if (objectType === 'activity' && aspectType === 'create') {
     handleWebhookEvent(objectId, ownerId)
-      .then(console.log(`Successfully updated description for activity ${objectId}`))
-      .catch(error => console.log(error));
+      .then(message => console.log(message))
+      .catch(error => {
+        console.log('Something went wrong');
+        console.log(error);
+      })
+      .finally(console.log());
   }
 });
 

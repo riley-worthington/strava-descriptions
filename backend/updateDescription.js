@@ -2,7 +2,7 @@ const fetch = require('node-fetch');
 
 const updateDescription = (activityId, accessToken, updateString) => {
   if (updateString === '') {
-    return Promise.reject(Error('Nothing to update'));
+    return Promise.resolve('Nothing to update');
   }
 
   const url = `https://www.strava.com/api/v3/activities/${activityId}`;
@@ -21,9 +21,8 @@ const updateDescription = (activityId, accessToken, updateString) => {
       if (!res.ok) {
         throw Error(`${res.status} ${res.statusText}`);
       }
-      return res;
+      return Promise.resolve(`Successfully updated the description of activity ${activityId}\n'${updateString}'`);
     })
-    .then(res => res.json())
     .catch(err => {
       console.log(err);
       throw Error('Failed to update description.');

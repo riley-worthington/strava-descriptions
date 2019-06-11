@@ -19,7 +19,8 @@ const getActivity = (activityId, accessToken) => {
     })
     .then(res => res.json())
     .catch(err => {
-      throw Error(`Problem getting Strava activity (${err})`);
+      console.log(`Problem getting Strava activity: ${err}`);
+      return null;
     });
 };
 

@@ -7,6 +7,7 @@ import SpotifyAuth from './Auth/SpotifyAuth';
 import Dashboard from './Dashboard/Dashboard';
 import Setup from './Setup/Setup';
 import Settings from './Settings/Settings';
+import About from './About/About';
 import Logout from './Auth/Logout';
 import withAthlete from './Auth/withAthlete';
 import './App.css';
@@ -21,6 +22,7 @@ const App = () => {
       <Route path={'/auth/strava'} component={StravaAuth} />
       <Route path={'/auth/spotify'} component={withAthlete(SpotifyAuth)} />
       <Route path={'/logout'} component={Logout} />
+      <Route path={'/about'} component={withAthlete(About)} />
     </Router>
   );
 }

@@ -58,6 +58,10 @@ const Dashboard = ({ athlete, imageSources }) => {
       title: 'Settings',
     },
     {
+      href: '/about',
+      title: 'About',
+    },
+    {
       href: '/logout',
       title: 'Log out',
     },

@@ -1,0 +1,21 @@
+.page-title {
+  text-align: center;
+}
+
+.about-page {
+  max-width: 700px;
+  margin: 0 auto 6em auto;
+  padding: 0 30px;
+}
+
+.answer {
+  font-family: 'Open Sans', 'Roboto', sans-serif;
+}
+
+.about-page a {
+  color: black;
+}
+
+.question-box {
+  margin-top: 3em;
+}

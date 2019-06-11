@@ -137,6 +137,10 @@ const Settings = ({ athlete, imageSources }) => {
       title: 'Dashboard',
     },
     {
+      href: '/about',
+      title: 'About',
+    },
+    {
       href: '/logout',
       title: 'Log out',
     },

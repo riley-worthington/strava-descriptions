@@ -7,7 +7,6 @@
   color: black;
   max-width: 700px;
   margin: 0 auto;
-  font-family: 'Roboto', sans-serif;
 }
 
 .loading-box {
@@ -28,9 +27,7 @@
 
 .welcome-message {
   font-size: 1.5rem;
-  /* color: #fc4c02; */
-  /* color: var(--strava-orange); */
-  color: #05B8CC;
+  color: var(--cerulean);
 }
 
 .prompt {

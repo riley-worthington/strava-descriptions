@@ -5,57 +5,90 @@ import './UserSelectedSettings.css';
 const UserSelectedSettings = ({ wantsWeather, wantsMusic, imageSources }) => {
   const icons = (
     <div className='icons'>
-      {
-        (wantsWeather) &&
+      {wantsWeather && (
         <span>
           <div className='icon-container'>
-            <img src={imageSources['sun']} alt='Sun' id='sun-face'/>
+            <img src={imageSources.sun} alt='Sun' id='sun-face' />
           </div>
         </span>
-      } {
-        (wantsWeather && wantsMusic) &&
+      )}
+      {' '}
+      {wantsWeather && wantsMusic && (
         <Fragment>
-          <div className='spacer'></div>
+          <div className='spacer' />
           <span id='plus-sign'>+</span>
-          <div className='spacer'></div>
+          <div className='spacer' />
         </Fragment>
-      } {
-        (wantsMusic) &&
+      )}
+      {' '}
+      {wantsMusic && (
         <span>
           <div className='icon-container'>
             <img src={imageSources['spotify-icon-green']} alt='Spotify Logo' id='spotify-logo' />
           </div>
         </span>
-      }
+      )}
     </div>
   );
 
   const message = (() => {
     const key = `${wantsWeather}-${wantsMusic}`;
     const messages = {
-      'true-true': <p>Tiempo will sync <b>weather</b> and <b>music</b>.</p>,
-      'true-false': <p>Tiempo will sync <b>weather</b>.</p>,
-      'false-true': <p>Tiempo will sync <b>music</b>.</p>,
+      'true-true': (
+        <p>
+          Tiempo will sync
+          {' '}
+          <b>weather</b>
+          {' '}
+and
+          {' '}
+          <b>music</b>
+.
+        </p>
+      ),
+      'true-false': (
+        <p>
+          Tiempo will sync
+          {' '}
+          <b>weather</b>
+.
+        </p>
+      ),
+      'false-true': (
+        <p>
+          Tiempo will sync
+          {' '}
+          <b>music</b>
+.
+        </p>
+      ),
       'false-false': <p>Tiempo will not add to your descriptions.</p>,
-    }
+    };
     return messages[key];
   })();
 
   return (
     <div className='dashboard-body fade-in'>
-      { icons }
+      {icons}
       <div className='message'>
-        {(wantsWeather || wantsMusic) && <p>You're good to go!</p>}
-        { message }
-        <a className='settings-link' href='/settings'>Settings</a>
+        {(wantsWeather || wantsMusic) && <p>You&apos;re good to go!</p>}
+        {message}
+        <a className='settings-link' href='/settings'>
+          Settings
+        </a>
       </div>
     </div>
   );
-}
+};
+
+UserSelectedSettings.defaultProps = {
+  imageSources: [],
+};
 
 UserSelectedSettings.propTypes = {
   wantsWeather: PropTypes.bool.isRequired,
   wantsMusic: PropTypes.bool.isRequired,
-}
+  imageSources: PropTypes.objectOf(PropTypes.string),
+};
 
 export default UserSelectedSettings;

@@ -12,19 +12,17 @@ import Logout from './Auth/Logout';
 import withAthlete from './Auth/withAthlete';
 import './App.css';
 
-const App = () => {
-  return (
-    <Router history={history}>
-      <Route exact path={'/'} component={LandingPage} />
-      <Route path={'/dashboard'} component={withAthlete(Dashboard)} />
-      <Route path={'/setup'} component={withAthlete(Setup)} />
-      <Route path={'/settings'} component={withAthlete(Settings)} />
-      <Route path={'/auth/strava'} component={StravaAuth} />
-      <Route path={'/auth/spotify'} component={withAthlete(SpotifyAuth)} />
-      <Route path={'/logout'} component={Logout} />
-      <Route path={'/about'} component={withAthlete(About)} />
-    </Router>
-  );
-}
+const App = () => (
+  <Router history={history}>
+    <Route exact path='/' component={LandingPage} />
+    <Route path='/dashboard' component={withAthlete(Dashboard)} />
+    <Route path='/setup' component={withAthlete(Setup)} />
+    <Route path='/settings' component={withAthlete(Settings)} />
+    <Route path='/auth/strava' component={StravaAuth} />
+    <Route path='/auth/spotify' component={withAthlete(SpotifyAuth)} />
+    <Route path='/logout' component={Logout} />
+    <Route path='/about' component={withAthlete(About)} />
+  </Router>
+);
 
 export default App;

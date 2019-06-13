@@ -12,11 +12,11 @@ const initialState = {
   wantsMusic: null,
   isLoading: true,
   isError: false,
-}
+};
 
 const dashboardReducer = (state, action) => {
   switch (action.type) {
-    case 'INITIALIZE_SETTINGS':
+    case 'INITIALIZE_SETTINGS': {
       const { wantsWeather, wantsMusic } = action.payload;
       return {
         ...state,
@@ -24,16 +24,17 @@ const dashboardReducer = (state, action) => {
         wantsMusic,
         isLoading: false,
       };
+    }
     case 'GET_SETTINGS_FAILURE':
       return {
         ...state,
         isLoading: false,
         isError: true,
-      }
+      };
     default:
       return state;
   }
-}
+};
 
 const Dashboard = ({ athlete, imageSources }) => {
   const athleteID = athlete.id;
@@ -44,14 +45,16 @@ const Dashboard = ({ athlete, imageSources }) => {
 
     getAthleteSettings(athleteID)
       .then(res => !didCancel && dispatch({ type: 'INITIALIZE_SETTINGS', payload: res }))
-      .catch(err => !didCancel && dispatch({ type: 'GET_SETTINGS_FAILURE' }));
+      .catch(err => !didCancel && dispatch({ type: 'GET_SETTINGS_FAILURE', payload: err }));
 
     return () => {
       didCancel = true;
     };
   }, [athleteID]);
 
-  const { wantsWeather, wantsMusic, isLoading, isError } = state;
+  const {
+    wantsWeather, wantsMusic, isLoading, isError,
+  } = state;
   const outLinks = [
     {
       href: '/settings',
@@ -71,13 +74,13 @@ const Dashboard = ({ athlete, imageSources }) => {
   if (isLoading) {
     body = (
       <div className='loading-box'>
-        <BallLoader id='black'/>
+        <BallLoader id='black' />
       </div>
     );
   } else if (isError) {
     body = (
       <div className='loading-box'>
-        <h3>Couldn't load information.</h3>
+        <h3>Couldn&apos;t load information.</h3>
       </div>
     );
   } else {
@@ -92,15 +95,20 @@ const Dashboard = ({ athlete, imageSources }) => {
 
   return (
     <Page athlete={athlete} outLinks={outLinks}>
-      { body }
+      {body}
     </Page>
   );
-}
+};
+
+Dashboard.defaultProps = {
+  imageSources: null,
+};
 
 Dashboard.propTypes = {
   athlete: PropTypes.shape({
     id: PropTypes.number,
-  })
-}
+  }).isRequired,
+  imageSources: PropTypes.objectOf(PropTypes.string),
+};
 
 export default withWaitForImages(Dashboard, ['sun', 'spotify-icon-green']);

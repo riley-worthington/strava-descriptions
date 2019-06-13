@@ -8,6 +8,10 @@
   padding: 0 30px;
 }
 
+.question {
+  font-family: 'Open Sans'
+}
+
 .answer {
   font-family: 'Open Sans', 'Roboto', sans-serif;
 }

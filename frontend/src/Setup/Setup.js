@@ -30,27 +30,14 @@ class Setup extends Component {
   componentDidMount() {
     this.setState({
       isLoading: false,
-    })
+    });
 
-    loadImages(['powered-by-dark-sky-black', 'spotify-logo-green'])
-      .then(sources => {
-        this.setState({
-          imagesLoaded: true,
-          imageSources: sources,
-        });
+    loadImages(['powered-by-dark-sky-black', 'spotify-logo-green']).then((sources) => {
+      this.setState({
+        imagesLoaded: true,
+        imageSources: sources,
       });
-  }
-
-  handleSelect(event) {
-    if (event.target.id === 'weather') {
-      this.setState(state => ({
-        isWeatherSelected: !state.isWeatherSelected
-      }))
-    } else if (event.target.id === 'spotify') {
-      this.setState(state => ({
-        isSpotifySelected: !state.isSpotifySelected
-      }))
-    }
+    });
   }
 
   async onSubmit(event) {
@@ -69,66 +56,112 @@ class Setup extends Component {
       body: JSON.stringify({
         wantsWeather: isWeatherSelected,
         wantsMusic: isSpotifySelected,
-      })
+      }),
     });
 
     if (isSpotifySelected) {
-      window.location.assign(`https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${SPOTIFY_REDIRECT_URI}&scope=${scope}&state=${stateParam}`);
+      window.location.assign(
+        `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${SPOTIFY_REDIRECT_URI}&scope=${scope}&state=${stateParam}`,
+      );
     } else {
       history.push('/dashboard');
+    }
+  }
+
+  handleSelect(event) {
+    if (event.target.id === 'weather') {
+      this.setState(state => ({
+        isWeatherSelected: !state.isWeatherSelected,
+      }));
+    } else if (event.target.id === 'spotify') {
+      this.setState(state => ({
+        isSpotifySelected: !state.isSpotifySelected,
+      }));
     }
   }
 
   render() {
     const infoMessage = 'Whenever you upload an activity to Strava, Tiempo will collect weather data and recently played Spotify history. It will then automatically update the description with no action required on your end.';
     const { athlete } = this.props;
-    const { isLoading, isUpdatingSettings, imagesLoaded, imageSources } = this.state;
-    const waiting = isLoading  || isUpdatingSettings || !imagesLoaded;
+    const {
+      isLoading, isUpdatingSettings, imagesLoaded, imageSources,
+    } = this.state;
+    const waiting = isLoading || isUpdatingSettings || !imagesLoaded;
 
-    return(
+    return (
       <div className='setup-page'>
-      { waiting ?
-        <div className='loading-box'>
-          { isUpdatingSettings && (
-            <Fragment>
-              <BallLoader id='black' />
-              <h1 className="authorizing">Updating your settings</h1>
-            </Fragment>
-          ) }
-        </div>
-          :
-        (<Fragment>
-          <header>
-            <h1 className='title'>TIEMPO</h1>
-          </header>
-          <div className='welcome-box fade-in'>
-            <p className='welcome-message'>{`Welcome, ${athlete.firstname}!`}</p>
+        {waiting ? (
+          <div className='loading-box'>
+            {isUpdatingSettings && (
+              <Fragment>
+                <BallLoader id='black' />
+                <h1 className='authorizing'>Updating your settings</h1>
+              </Fragment>
+            )}
           </div>
-          <div className='prompt-box fade-in'>
-            <p className='prompt'>What information should Tiempo put in your activity descriptions?</p>
-            <span className='more-info' data-tip={infoMessage}>How does this work?</span>
-            <ReactTooltip className='tooltip' place='top' effect='solid' event='click' globalEventOff='click'/>
-          </div>
-          <div className='box fade-in'>
-            <form className='tiempo-options'>
-              <CheckboxItem id='weather' text='Weather conditions' onChange={this.handleSelect} />
-              <CheckboxItem id='spotify' text='Music you listened to' onChange={this.handleSelect} />
-            </form>
-          </div>
-          <p className='hesitant fade-in'>(You can change this at any time)</p>
-          <button className='submit-button fade-in' onClick={this.onSubmit}>Let's Go!</button>
-          <div className='branding fade-in'>
-            <a href='https://darksky.net/poweredby/' target="_blank" rel='noreferrer noopener'>
-              <img id='darksky' src={imageSources['powered-by-dark-sky-black']} alt='Powered by DarkSky' />
-            </a>
-            <a href='https://www.spotify.com' id='spotify-link' target='_blank' rel='noreferrer noopener'>
-              <div className='spotify-block'>
-                <span className='provider'>Powered by</span>
-                <img id='spotify' src={imageSources['spotify-logo-green']} alt='Powered by Spotify' />
-              </div>
-            </a>
-          </div>
-        </Fragment>) }
+        ) : (
+          <Fragment>
+            <header>
+              <h1 className='title'>TIEMPO</h1>
+            </header>
+            <div className='welcome-box fade-in'>
+              <p className='welcome-message'>{`Welcome, ${athlete.firstname}!`}</p>
+            </div>
+            <div className='prompt-box fade-in'>
+              <p className='prompt'>
+                What information should Tiempo put in your activity descriptions?
+              </p>
+              <span className='more-info' data-tip={infoMessage}>
+                How does this work?
+              </span>
+              <ReactTooltip
+                className='tooltip'
+                place='top'
+                effect='solid'
+                event='click'
+                globalEventOff='click'
+              />
+            </div>
+            <div className='box fade-in'>
+              <form className='tiempo-options'>
+                <CheckboxItem id='weather' text='Weather conditions' onChange={this.handleSelect} />
+                <CheckboxItem
+                  id='spotify'
+                  text='Music you listened to'
+                  onChange={this.handleSelect}
+                />
+              </form>
+            </div>
+            <p className='hesitant fade-in'>(You can change this at any time)</p>
+            <button type='button' className='submit-button fade-in' onClick={this.onSubmit}>
+              Let&apos;s Go!
+            </button>
+            <div className='branding fade-in'>
+              <a href='https://darksky.net/poweredby/' target='_blank' rel='noreferrer noopener'>
+                <img
+                  id='darksky'
+                  src={imageSources['powered-by-dark-sky-black']}
+                  alt='Powered by DarkSky'
+                />
+              </a>
+              <a
+                href='https://www.spotify.com'
+                id='spotify-link'
+                target='_blank'
+                rel='noreferrer noopener'
+              >
+                <div className='spotify-block'>
+                  <span className='provider'>Powered by</span>
+                  <img
+                    id='spotify'
+                    src={imageSources['spotify-logo-green']}
+                    alt='Powered by Spotify'
+                  />
+                </div>
+              </a>
+            </div>
+          </Fragment>
+        )}
       </div>
     );
   }
@@ -137,7 +170,7 @@ class Setup extends Component {
 Setup.propTypes = {
   athlete: PropTypes.shape({
     id: PropTypes.number,
-  })
-}
+  }).isRequired,
+};
 
 export default Setup;

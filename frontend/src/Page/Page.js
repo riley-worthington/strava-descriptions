@@ -10,14 +10,14 @@ const Page = ({ children, athlete, outLinks }) => {
 
   return (
     <Sidebar
-      sidebar={
+      sidebar={(
         <SidebarContent
           name={athlete.firstname}
           links={outLinks}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-      }
+      )}
       open={isSidebarOpen}
       sidebarClassName='sidebar'
       onSetOpen={setIsSidebarOpen}
@@ -29,17 +29,27 @@ const Page = ({ children, athlete, outLinks }) => {
         isSidebarOpen={isSidebarOpen}
         setIsSidebarOpen={setIsSidebarOpen}
       />
-      <div className='child-content'>
-        { children }
-      </div>
+      <div className='child-content'>{children}</div>
     </Sidebar>
   );
-}
+};
 
 Page.propTypes = {
   athlete: PropTypes.shape({
     id: PropTypes.number,
-  })
-}
+  }).isRequired,
+  children: PropTypes.node,
+  outLinks: PropTypes.arrayOf(
+    PropTypes.shape({
+      href: PropTypes.string,
+      title: PropTypes.string,
+    }),
+  ),
+};
+
+Page.defaultProps = {
+  children: null,
+  outLinks: [],
+};
 
 export default Page;

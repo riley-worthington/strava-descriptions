@@ -29,7 +29,8 @@
 .welcome-message {
   font-size: 1.5rem;
   /* color: #fc4c02; */
-  color: var(--strava-orange);
+  /* color: var(--strava-orange); */
+  color: #05B8CC;
 }
 
 .prompt {
@@ -69,7 +70,8 @@
 
 .submit-button {
   /* background-color: #fc4c02; */
-  background-color: var(--strava-orange);
+  /* background-color: var(--strava-orange); */
+  background-color: #05B8CC;
   font-size: 1.3rem;
   font-weight: bold;
   color: white;

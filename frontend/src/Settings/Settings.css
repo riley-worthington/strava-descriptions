@@ -19,6 +19,7 @@
 }
 
 .page-title {
-  font-family: 'Roboto', sans-serif;
-  color: var(--strava-orange);
+  font-family: 'Open Sans', sans-serif;
+  /* color: var(--strava-orange); */
+  color: #05B8CC;
 }

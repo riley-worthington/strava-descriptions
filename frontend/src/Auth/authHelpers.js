@@ -1,8 +1,8 @@
 import Cookies from 'js-cookie';
 
-export const generateRandomString = length => {
+export const generateRandomString = (length) => {
   let text = '';
-  let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
   for (let i = 0; i < length; i += 1) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
@@ -17,16 +17,13 @@ export const setNewStateParam = () => {
   Cookies.remove('stateParam');
   Cookies.set('stateParam', stateParam);
   return stateParam;
-}
+};
 
 // Gets the stored state parameter from browser
-export const getStoredStateParam = () => {
-  return sessionStorage.getItem('stateParam') || Cookies.get('stateParam');
-}
+export const getStoredStateParam = () => sessionStorage.getItem('stateParam') || Cookies.get('stateParam');
 
 // Removes the stored state parameter from browser
 export const removeStoredStateParam = () => {
   sessionStorage.removeItem('stateParam');
   Cookies.remove('stateParam');
-  return;
-}
+};

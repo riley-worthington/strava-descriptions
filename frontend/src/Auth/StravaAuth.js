@@ -6,7 +6,6 @@ import { getStoredStateParam } from './authHelpers';
 import './AuthScreen.css';
 
 class StravaAuth extends Component {
-
   componentDidMount() {
     const urlParams = new URLSearchParams(window.location.search);
     const code = urlParams.get('code');
@@ -24,20 +23,20 @@ class StravaAuth extends Component {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            code: code,
+            code,
+          }),
+        })
+          .then(res => res.json())
+          .then((res) => {
+            const { stravaAccessToken, athlete, isFirstTime } = res;
+            localStorage.setItem('athlete', JSON.stringify(athlete));
+            localStorage.setItem('stravaAccessToken', JSON.stringify(stravaAccessToken));
+            isFirstTime ? history.replace('/setup') : history.replace('/dashboard');
           })
-        })
-        .then(res => res.json())
-        .then(res => {
-          const { stravaAccessToken, athlete, isFirstTime } = res;
-          localStorage.setItem('athlete', JSON.stringify(athlete));
-          localStorage.setItem('stravaAccessToken', JSON.stringify(stravaAccessToken));
-          isFirstTime ? history.replace('/setup') : history.replace('/dashboard');
-        })
-        .catch(err => {
-          console.log(err);
-          history.replace('/');
-        });
+          .catch((err) => {
+            console.log(err);
+            history.replace('/');
+          });
       } else {
         console.log('invalid state param');
         history.replace('/');
@@ -46,11 +45,10 @@ class StravaAuth extends Component {
   }
 
   render() {
-
     return (
-      <div className="auth-loading-page">
-        <BallLoader id='strava'/>
-        <h1 className="authorizing">Authorizing Strava</h1>
+      <div className='auth-loading-page'>
+        <BallLoader id='strava' />
+        <h1 className='authorizing'>Authorizing Strava</h1>
       </div>
     );
   }

@@ -31,7 +31,11 @@ class StravaAuth extends Component {
             const { stravaAccessToken, athlete, isFirstTime } = res;
             localStorage.setItem('athlete', JSON.stringify(athlete));
             localStorage.setItem('stravaAccessToken', JSON.stringify(stravaAccessToken));
-            isFirstTime ? history.replace('/setup') : history.replace('/dashboard');
+            if (isFirstTime) {
+              history.replace('/setup');
+            } else {
+              history.replace('/dashboard');
+            }
           })
           .catch((err) => {
             console.log(err);

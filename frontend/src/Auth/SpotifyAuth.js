@@ -55,7 +55,7 @@ class SpotifyAuth extends Component {
 SpotifyAuth.propTypes = {
   athlete: PropTypes.shape({
     id: PropTypes.number,
-  }),
+  }).isRequired,
 };
 
 export default SpotifyAuth;

@@ -73,9 +73,7 @@
     flex-direction: column;
     align-items: center;
 }
-.nav li ul li {
-    /* width:200px; */
-}
+
 .nav li ul a {
     border:none;
 }

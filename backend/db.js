@@ -6,10 +6,8 @@ const client = new Client({
   ssl: true,
 });
 
-try {
-  client.connect();
-} catch (error) {
-  console.log(`Couldn't connect to database: ${error}`);
-}
+client.connect();
+
+client.on('error', err => console.log(`Couldn't connect to database: ${err}`));
 
 module.exports = client;

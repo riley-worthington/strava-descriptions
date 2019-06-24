@@ -6,7 +6,7 @@ const CheckboxItem = ({
   id, text, checked, onChange,
 }) => (
   <label className='checkbox-label no-mobile-highlight' htmlFor={id}>
-    <input type='checkbox' id={id} checked={checked} onChange={onChange} />
+    <input type='checkbox' id={id} checked={checked} onChange={onChange} value={id} />
     <span className='checkbox-custom' />
     <span className='label-text'>{text}</span>
   </label>
@@ -18,7 +18,7 @@ CheckboxItem.defaultProps = {
   id: null,
   text: '',
   checked: true,
-  onChange: null,
+  onChange: () => {},
 };
 
 CheckboxItem.propTypes = {

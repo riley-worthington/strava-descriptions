@@ -1,14 +1,11 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useReducer } from 'react';
-import { setNewStateParam } from '../Auth/authHelpers';
-import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
-// import history from '../history';
 import Page from '../Page/Page';
-import CheckboxItem from '../Setup/CheckboxItem';
 import CustomFormat from './CustomFormat';
 import BallLoader from '../widgets/BallLoader';
 import { getAthleteSettings, updateAthleteSettings } from './athleteSettings';
 import './Settings.css';
+import GeneralSettings from './GeneralSettings';
 
 const DEFAULT_WEATHER_FORMAT_STRING = '$temp$, $summary$ $emoji$';
 const DEFAULT_MUSIC_FORMAT_STRING = '$name$ - $artists$';
@@ -122,16 +119,6 @@ const settingsReducer = (state, action) => {
 
 const requestReducer = (state, action) => {
   switch (action.type) {
-    case 'TOGGLING_WEATHER':
-      return {
-        ...state,
-        togglingWeather: action.payload,
-      };
-    case 'TOGGLING_MUSIC':
-      return {
-        ...state,
-        togglingMusic: action.payload,
-      };
     case 'TOGGLING_TEMP_UNITS':
       return {
         ...state,
@@ -151,8 +138,6 @@ const Settings = ({ athlete }) => {
   const athleteID = athlete.id;
   const [state, dispatch] = useReducer(settingsReducer, initialState);
   const [requestsPending, setRequestsPending] = useReducer(requestReducer, {
-    togglingWeather: false,
-    togglingMusic: false,
     togglingTempUnits: false,
     togglingDistanceUnits: false,
     updatingWeatherFormatString: false,
@@ -170,62 +155,6 @@ const Settings = ({ athlete }) => {
       didCancel = true;
     };
   }, [athleteID]);
-
-  const toggleWantsWeather = () => {
-    const isPending = requestsPending.togglingWeather;
-    if (isPending) {
-      return;
-    }
-    setRequestsPending({ type: 'TOGGLING_WEATHER', payload: true });
-
-    const isChecked = state.isWeatherSelected;
-    dispatch({ type: 'SET_IS_WEATHER_SELECTED', payload: !isChecked });
-    updateAthleteSettings(athleteID, {
-      wantsWeather: !isChecked,
-    })
-      .then(res => {
-        if (res.status !== 200) {
-          throw Error('Request failed');
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch({ type: 'SET_IS_WEATHER_SELECTED', payload: isChecked });
-      })
-      .finally(() => setRequestsPending({ type: 'TOGGLING_WEATHER', payload: false }));
-  };
-
-  const toggleWantsMusic = async () => {
-    const isPending = requestsPending.togglingMusic;
-    if (isPending) {
-      return;
-    }
-    setRequestsPending({ type: 'TOGGLING_MUSIC', payload: true });
-
-    const isChecked = state.isMusicSelected;
-    dispatch({ type: 'SET_IS_MUSIC_SELECTED', payload: !isChecked });
-    updateAthleteSettings(athleteID, {
-      wantsMusic: !isChecked,
-    })
-      .then(res => {
-        if (res.status !== 200) {
-          throw Error('Request failed');
-        }
-        const { isMusicSelected, isSpotifyAuthorized } = state;
-        if (isMusicSelected && !isSpotifyAuthorized) {
-          const stateParam = setNewStateParam();
-          const scope = 'user-read-recently-played';
-          window.location.assign(
-            `https://accounts.spotify.com/authorize?client_id=${SPOTIFY_CLIENT_ID}&response_type=code&redirect_uri=${SPOTIFY_REDIRECT_URI}&scope=${scope}&state=settings${stateParam}`,
-          );
-        }
-      })
-      .catch(err => {
-        console.log(err);
-        dispatch({ type: 'SET_IS_MUSIC_SELECTED', payload: isChecked });
-      })
-      .finally(() => setRequestsPending({ type: 'TOGGLING_MUSIC', payload: false }));
-  };
 
   const toggleTempUnits = event => {
     const isPending = requestsPending.togglingTempUnits;
@@ -374,21 +303,12 @@ const Settings = ({ athlete }) => {
           <form className='settings-form'>
             <div className='settings-block'>
               <h2>General</h2>
-              <h3 className='setting-description'>Add to descriptions:</h3>
-              <div className='checkboxes'>
-                <CheckboxItem
-                  id='weather'
-                  text='Weather conditions'
-                  checked={isWeatherSelected}
-                  onChange={toggleWantsWeather}
-                />
-                <CheckboxItem
-                  id='spotify'
-                  text='Music you listened to'
-                  checked={isMusicSelected}
-                  onChange={toggleWantsMusic}
-                />
-              </div>
+              <GeneralSettings
+                athleteID={athleteID}
+                isSpotifyAuthorized={state.isSpotifyAuthorized}
+                initialWeatherSetting={isWeatherSelected}
+                initialMusicSetting={isMusicSelected}
+              />
             </div>
             <div className='settings-block'>
               <h2>Units</h2>

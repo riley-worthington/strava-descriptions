@@ -57,16 +57,29 @@ app.post('/auth/spotify', (req, res) => {
     .catch(error => console.log(error));
 });
 
-// TODO: Change this to PUT /settings/:id
-app.put('/settings/:id', (req, res) => {
+// app.put('/settings/:id', (req, res) => {
+//   const athleteID = req.params.id;
+//   const { wantsWeather, wantsMusic } = req.body;
+//   updateSettings(athleteID, wantsWeather, wantsMusic)
+//     .then(() => {
+//       console.log('Updated settings');
+//       res.sendStatus(200);
+//     })
+//     .catch(error => console.log(error));
+// });
+
+app.post('/settings/:id', (req, res) => {
   const athleteID = req.params.id;
-  const { wantsWeather, wantsMusic } = req.body;
-  updateSettings(athleteID, wantsWeather, wantsMusic)
+  const { changes } = req.body;
+  console.log(changes);
+  updateSettings(athleteID, changes)
     .then(() => {
-      console.log('Updated settings');
+      console.log(`Updated settings ${changes}`);
       res.sendStatus(200);
     })
-    .catch(error => console.log(error));
+    .catch(error => {
+      console.log(error);
+    });
 });
 
 app.get('/settings/:id', (req, res) => {

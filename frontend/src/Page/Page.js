@@ -3,10 +3,12 @@ import PropTypes from 'prop-types';
 import Sidebar from 'react-sidebar';
 import SidebarContent from './SidebarContent';
 import ResponsiveHeader from './ResponsiveHeader';
+import useWindowDimensions from './useWindowDimensions';
 import './Page.css';
 
 const Page = ({ children, athlete, outLinks }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { width } = useWindowDimensions();
 
   return (
     <Sidebar
@@ -19,17 +21,20 @@ const Page = ({ children, athlete, outLinks }) => {
         />
       )}
       open={isSidebarOpen}
+      pullRight={width > 960}
       sidebarClassName='sidebar'
       onSetOpen={setIsSidebarOpen}
       className='sidebar'
     >
-      <ResponsiveHeader
-        athleteName={athlete.firstname}
-        navLinks={outLinks}
-        isSidebarOpen={isSidebarOpen}
-        setIsSidebarOpen={setIsSidebarOpen}
-      />
-      <div className='child-content'>{children}</div>
+      <div className='page-content'>
+        <ResponsiveHeader
+          athleteName={athlete.firstname}
+          navLinks={outLinks}
+          isSidebarOpen={isSidebarOpen}
+          setIsSidebarOpen={setIsSidebarOpen}
+        />
+        <div className='child-content'>{children}</div>
+      </div>
     </Sidebar>
   );
 };

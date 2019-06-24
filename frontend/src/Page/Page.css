@@ -1,4 +1,21 @@
 
+.page-content {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.child-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* height: 100%; */
+  /* height: calc(100% - 4em); */
+  /* margin-top: 6em; */
+  overflow-y: scroll;
+}
+
 /* Setting z-indexes to allow for sticky header */
 .sidebar {
   background: white;
@@ -27,6 +44,10 @@
   font-size: 1.5em;
 }
 
+.sidebar-nav a:hover {
+  text-shadow: 0 0 0 #000, 0 0 0 #000;
+}
+
 .user-firstname {
   margin-left: 25px;
   margin-right: 25px;
@@ -38,7 +59,7 @@
 /* Mobile and Tablet Styles */
 @media only screen and (max-width: 960px) {
   .child-content {
-    margin-top: 6em;
+    /* margin-top: 6em; */
   }
 }
 
@@ -46,5 +67,12 @@
 @media only screen and (min-width: 401px) and (max-width: 960px) {
   .sidebar {
     min-width: 33vw;
+  }
+}
+
+/* Desktop styles */
+@media only screen and (min-width: 961px) {
+  .sidebar {
+    min-width: 15em;
   }
 }

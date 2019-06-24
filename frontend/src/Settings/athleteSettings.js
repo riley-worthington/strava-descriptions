@@ -8,19 +8,18 @@ export const getAthleteSettings = athleteID => fetch(`${API_URL}/settings/${athl
   },
 })
   .then(res => res.json())
-  .catch((err) => {
+  .catch(err => {
     console.log(err);
     throw Error('Failed to fetch athlete settings.');
   });
 
-export const updateAthleteSettings = (athleteID, wantsWeather, wantsMusic) => fetch(`${API_URL}/settings/${athleteID}`, {
-  method: 'PUT',
+export const updateAthleteSettings = (athleteID, changes) => fetch(`${API_URL}/settings/${athleteID}`, {
+  method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    wantsWeather,
-    wantsMusic,
+    changes,
   }),
-}).catch((err) => {
+}).catch(err => {
   console.log(err);
-  throw Error('Failed to update athlete settings.');
+  // throw Error('Failed to update athlete settings.');
 });

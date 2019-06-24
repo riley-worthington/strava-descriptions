@@ -6,11 +6,11 @@
 
 html {
   visibility: hidden;
-  overflow-x: hidden;
 }
 
 body {
   margin: 0;
+  /* position: relative; */
   font-family: 'Open Sans', 'Roboto', 'Helvetica', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

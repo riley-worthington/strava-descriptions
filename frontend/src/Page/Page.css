@@ -1,19 +1,54 @@
-
 .page-content {
-  height: 100vh;
-  overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
+}
+
+.test-sidebar {
+  height: 100%;
+  min-width: 66vw;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: -66vw;
+  z-index: 100;
+  background-color: white;
+  transition: .3s ease-out;
+}
+
+.test-sidebar.open {
+  left: 0;
+}
+
+.test-sidebar.open ~ .child-content {
+  /* opacity: 0.5; */
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity .3s ease-out, z-index .3s step-end;
+  -webkit-transition: opacity .3s ease-out, z-index .3s step-end;
+  background-color: rgba(0,0,0,.3);
+}
+
+.overlay.open {
+  opacity: 1;
+  z-index: 3;
+  transition: opacity .3s ease-out, z-index .3s step-start;
+  -webkit-transition: opacity .3s ease-out, z-index .3s step-start;
 }
 
 .child-content {
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* height: 100%; */
-  /* height: calc(100% - 4em); */
-  /* margin-top: 6em; */
-  overflow-y: scroll;
+  z-index: 1;
 }
 
 /* Setting z-indexes to allow for sticky header */
@@ -56,10 +91,10 @@
   font-size: 1.5em;
 }
 
-/* Mobile and Tablet Styles */
-@media only screen and (max-width: 960px) {
+/* Mobile Styles */
+@media only screen and (max-width: 400px) {
   .child-content {
-    /* margin-top: 6em; */
+    padding-top: 4rem;
   }
 }
 
@@ -74,5 +109,19 @@
 @media only screen and (min-width: 961px) {
   .sidebar {
     min-width: 15em;
+  }
+
+  .child-content {
+    padding-top: 4.5rem;
+  }
+
+  .test-sidebar.open {
+    right: 0;
+  }
+
+  .test-sidebar {
+    min-width: 250px;
+    right: -33vw;
+    left: auto !important;
   }
 }

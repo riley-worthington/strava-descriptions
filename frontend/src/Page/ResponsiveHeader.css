@@ -2,12 +2,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-
-  /* position: fixed;
+  position: fixed;
   top: 0;
   width: 100%;
-  background: white;
-  z-index: 1; */
+  background-color: white;
+  z-index: 2;
 }
 
 .page-site-title {
@@ -19,7 +18,14 @@
 
 /* Mobile Styles */
 @media only screen and (max-width: 400px) {
+  .page-header {
+    height: 4rem;
+  }
 
+  .page-site-title {
+    font-size: 2rem;
+    margin: 1rem 2rem;
+  }
 }
 
 /* Tablet Styles */
@@ -30,9 +36,9 @@
 /* Desktop styles */
 @media only screen and (min-width: 961px) {
   .page-header {
-    /* display: none; */
     flex-direction: row-reverse;
     padding-right: 1em;
+    height: 4.5rem;
   }
 
   .page-site-title {

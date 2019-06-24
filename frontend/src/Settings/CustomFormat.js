@@ -28,6 +28,10 @@ const CustomFormat = ({
 
   return (
     <Fragment>
+      <div className='preview-box'>
+        <h4 className='sub-heading'>Preview (using example data):</h4>
+        <p className='preview'>{`${parseFormatString(formatString)}`}</p>
+      </div>
       <textarea
         id='format'
         className='weather-format'
@@ -38,10 +42,6 @@ const CustomFormat = ({
         onChange={updateFormatString}
         defaultValue={defaultValue}
       />
-      <div className='preview-box'>
-        <h4 className='sub-heading'>Preview (using example data):</h4>
-        <p className='preview'>{`${parseFormatString(formatString)}`}</p>
-      </div>
     </Fragment>
   );
 };

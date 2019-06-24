@@ -6,13 +6,11 @@ import './ResponsiveHeader.css';
 const ResponsiveHeader = ({
   isSidebarOpen, setIsSidebarOpen,
 }) => {
-  const siteTitle = <h1 className='page-site-title'>TIEMPO</h1>;
-
   return (
     <Fragment>
       <header className='page-header'>
         <Hamburger isActive={isSidebarOpen} animation='hamburger--spin' onClick={() => setIsSidebarOpen(true)} />
-        {siteTitle}
+        <h1 className='page-site-title'>TIEMPO</h1>
       </header>
     </Fragment>
   );

@@ -88,7 +88,6 @@ const GeneralSettings = ({
         if (res.status !== 200) {
           throw Error('Request failed');
         }
-        // const { isMusicSelected, isSpotifyAuthorized } = state;
         if (state.isMusicSelected && !isSpotifyAuthorized) {
           const stateParam = setNewStateParam();
           const scope = 'user-read-recently-played';

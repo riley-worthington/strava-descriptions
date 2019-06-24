@@ -11,31 +11,40 @@ const Page = ({ children, athlete, outLinks }) => {
   const { width } = useWindowDimensions();
 
   return (
-    <Sidebar
-      sidebar={(
+    // <Sidebar
+    //   sidebar={(
+    //     <SidebarContent
+    //       name={athlete.firstname}
+    //       links={outLinks}
+    //       isSidebarOpen={isSidebarOpen}
+    //       setIsSidebarOpen={setIsSidebarOpen}
+    //     />
+    //   )}
+    //   open={isSidebarOpen}
+    //   pullRight={width > 960}
+    //   sidebarClassName='sidebar'
+    //   onSetOpen={setIsSidebarOpen}
+    //   className='sidebar'
+    // >
+    <div className='page-content'>
+      <div className={`test-sidebar${isSidebarOpen ? ' open' : ''}`}>
         <SidebarContent
           name={athlete.firstname}
           links={outLinks}
           isSidebarOpen={isSidebarOpen}
           setIsSidebarOpen={setIsSidebarOpen}
         />
-      )}
-      open={isSidebarOpen}
-      pullRight={width > 960}
-      sidebarClassName='sidebar'
-      onSetOpen={setIsSidebarOpen}
-      className='sidebar'
-    >
-      <div className='page-content'>
-        <ResponsiveHeader
-          athleteName={athlete.firstname}
-          navLinks={outLinks}
-          isSidebarOpen={isSidebarOpen}
-          setIsSidebarOpen={setIsSidebarOpen}
-        />
-        <div className='child-content'>{children}</div>
       </div>
-    </Sidebar>
+      <div className={`overlay${isSidebarOpen ? ' open' : ''}`}></div>
+      <ResponsiveHeader
+        athleteName={athlete.firstname}
+        navLinks={outLinks}
+        isSidebarOpen={isSidebarOpen}
+        setIsSidebarOpen={setIsSidebarOpen}
+      />
+      <div className='child-content'>{children}</div>
+    </div>
+    // </Sidebar>
   );
 };
 

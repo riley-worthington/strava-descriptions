@@ -35,7 +35,7 @@ const Page = ({ children, athlete, outLinks }) => {
           setIsSidebarOpen={setIsSidebarOpen}
         />
       </div>
-      <div className={`overlay${isSidebarOpen ? ' open' : ''}`}></div>
+      <div className={`overlay${isSidebarOpen ? ' open' : ''}`} onClick={() => setIsSidebarOpen(false)} />
       <ResponsiveHeader
         athleteName={athlete.firstname}
         navLinks={outLinks}

@@ -103,6 +103,10 @@
   .sidebar {
     min-width: 33vw;
   }
+
+  .child-content {
+    padding-top: 4rem;
+  }
 }
 
 /* Desktop styles */

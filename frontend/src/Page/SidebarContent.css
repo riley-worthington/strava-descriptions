@@ -1,4 +1,17 @@
 .sidebar-header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  height: 4rem;
+}
+
+.user-firstname {
+  margin: 0;
+}
+
+/* Desktop styles */
+@media only screen and (min-width: 961px) {
+  .sidebar-header {
+    height: 4.5rem;
+  }
 }

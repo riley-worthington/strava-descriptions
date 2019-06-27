@@ -1,5 +1,5 @@
-/* eslint-disable react/prop-types */
 import React, { Fragment, useReducer, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import CheckboxItem from '../Setup/CheckboxItem';
 import { updateAthleteSettings } from './athleteSettings';
 import { setNewStateParam } from '../Auth/authHelpers';
@@ -122,6 +122,19 @@ const GeneralSettings = ({
       </div>
     </Fragment>
   );
+};
+
+GeneralSettings.defaultProps = {
+  isSpotifyAuthorized: false,
+  initialWeatherSetting: true,
+  initialMusicSetting: true,
+};
+
+GeneralSettings.propTypes = {
+  athleteID: PropTypes.number.isRequired,
+  isSpotifyAuthorized: PropTypes.bool,
+  initialWeatherSetting: PropTypes.bool,
+  initialMusicSetting: PropTypes.bool,
 };
 
 export default GeneralSettings;

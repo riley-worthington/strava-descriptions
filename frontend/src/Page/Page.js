@@ -1,31 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import Sidebar from 'react-sidebar';
 import SidebarContent from './SidebarContent';
 import ResponsiveHeader from './ResponsiveHeader';
-import useWindowDimensions from './useWindowDimensions';
 import './Page.css';
 
 const Page = ({ children, athlete, outLinks }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const { width } = useWindowDimensions();
 
   return (
-    // <Sidebar
-    //   sidebar={(
-    //     <SidebarContent
-    //       name={athlete.firstname}
-    //       links={outLinks}
-    //       isSidebarOpen={isSidebarOpen}
-    //       setIsSidebarOpen={setIsSidebarOpen}
-    //     />
-    //   )}
-    //   open={isSidebarOpen}
-    //   pullRight={width > 960}
-    //   sidebarClassName='sidebar'
-    //   onSetOpen={setIsSidebarOpen}
-    //   className='sidebar'
-    // >
     <div className='page-content'>
       <div className={`test-sidebar${isSidebarOpen ? ' open' : ''}`}>
         <SidebarContent
@@ -35,7 +17,13 @@ const Page = ({ children, athlete, outLinks }) => {
           setIsSidebarOpen={setIsSidebarOpen}
         />
       </div>
-      <div className={`overlay${isSidebarOpen ? ' open' : ''}`} onClick={() => setIsSidebarOpen(false)} />
+      <div
+        className={`overlay${isSidebarOpen ? ' open' : ''}`}
+        onClick={() => setIsSidebarOpen(false)}
+        onKeyDown={() => setIsSidebarOpen(false)}
+        role='button'
+        tabIndex='-1'
+      />
       <ResponsiveHeader
         athleteName={athlete.firstname}
         navLinks={outLinks}
@@ -44,7 +32,6 @@ const Page = ({ children, athlete, outLinks }) => {
       />
       <div className='child-content'>{children}</div>
     </div>
-    // </Sidebar>
   );
 };
 

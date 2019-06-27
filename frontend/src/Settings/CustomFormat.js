@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
 import './CustomFormat.css';
 
 const CustomFormat = ({
@@ -44,6 +45,20 @@ const CustomFormat = ({
       />
     </Fragment>
   );
+};
+
+CustomFormat.defaultProps = {
+  defaultValue: '',
+  isSelected: true,
+  formatString: '',
+  updateFormatString: null,
+};
+
+CustomFormat.propTypes = {
+  defaultValue: PropTypes.string,
+  isSelected: PropTypes.bool,
+  formatString: PropTypes.string,
+  updateFormatString: PropTypes.func,
 };
 
 export default CustomFormat;

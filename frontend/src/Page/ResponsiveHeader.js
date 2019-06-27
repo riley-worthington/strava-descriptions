@@ -5,16 +5,14 @@ import './ResponsiveHeader.css';
 
 const ResponsiveHeader = ({
   isSidebarOpen, setIsSidebarOpen,
-}) => {
-  return (
-    <Fragment>
-      <header className='page-header'>
-        <Hamburger isActive={isSidebarOpen} animation='hamburger--spin' onClick={() => setIsSidebarOpen(true)} />
-        <h1 className='page-site-title'>TIEMPO</h1>
-      </header>
-    </Fragment>
-  );
-};
+}) => (
+  <Fragment>
+    <header className='page-header'>
+      <Hamburger isActive={isSidebarOpen} animation='hamburger--spin' onClick={() => setIsSidebarOpen(true)} />
+      <h1 className='page-site-title'>TIEMPO</h1>
+    </header>
+  </Fragment>
+);
 
 ResponsiveHeader.defaultProps = {
   isSidebarOpen: false,

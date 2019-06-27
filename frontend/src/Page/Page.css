@@ -20,10 +20,6 @@
   left: 0;
 }
 
-.test-sidebar.open ~ .child-content {
-  /* opacity: 0.5; */
-}
-
 .overlay {
   position: fixed;
   top: 0;

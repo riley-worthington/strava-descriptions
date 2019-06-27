@@ -10,9 +10,12 @@ const SidebarContent = ({
     <header className='sidebar-header'>
       <h3 className='user-firstname no-mobile-highlight'>{name}</h3>
       <Hamburger
+        type='button'
         animation='hamburger--spin'
         isActive={isSidebarOpen}
         onClick={() => setIsSidebarOpen(false)}
+        onKeyDown={() => setIsSidebarOpen(false)}
+        tabIndex='0'
       />
     </header>
     <nav className='sidebar-nav'>

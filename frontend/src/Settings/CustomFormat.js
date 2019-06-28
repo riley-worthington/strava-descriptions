@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import './CustomFormat.css';
 
 const CustomFormat = ({
-  defaultValue, isSelected, formatString, updateFormatString,
+  isSelected, formatString, updateFormatString,
 }) => {
   const parseFormatString = str => {
     const replaceChars = {
@@ -36,26 +36,24 @@ const CustomFormat = ({
       <textarea
         id='format'
         className='weather-format'
-        disabled={!isSelected}
+        // disabled={!isSelected}
         name='format'
         rows='5'
         cols='33'
         onChange={updateFormatString}
-        defaultValue={defaultValue}
+        value={formatString}
       />
     </Fragment>
   );
 };
 
 CustomFormat.defaultProps = {
-  defaultValue: '',
   isSelected: true,
   formatString: '',
   updateFormatString: null,
 };
 
 CustomFormat.propTypes = {
-  defaultValue: PropTypes.string,
   isSelected: PropTypes.bool,
   formatString: PropTypes.string,
   updateFormatString: PropTypes.func,

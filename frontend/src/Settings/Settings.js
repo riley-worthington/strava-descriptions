@@ -1,30 +1,17 @@
 import PropTypes from 'prop-types';
 import React, { Fragment, useEffect, useReducer } from 'react';
 import Page from '../Page/Page';
-import CustomFormat from './CustomFormat';
 import BallLoader from '../widgets/BallLoader';
 import GeneralSettings from './GeneralSettings';
 import UnitSettings from './UnitSettings';
-import { getAthleteSettings, updateAthleteSettings } from './athleteSettings';
+import CustomizationSettings from './CustomizationSettings';
+import { getAthleteSettings } from './athleteSettings';
 import './Settings.css';
 
 const DEFAULT_WEATHER_FORMAT_STRING = '$temp$, $summary$ $emoji$';
 const DEFAULT_MUSIC_FORMAT_STRING = '$name$ - $artists$';
-
-const initialState = {
-  isLoading: true,
-  isUpdatingSettings: false,
-  isWeatherSelected: true,
-  isMusicSelected: true,
-  isSpotifyAuthorized: false,
-  isError: false,
-  weatherFormatString: DEFAULT_WEATHER_FORMAT_STRING,
-  initialWeatherFormatString: DEFAULT_WEATHER_FORMAT_STRING,
-  musicFormatString: DEFAULT_MUSIC_FORMAT_STRING,
-  initialMusicFormatString: DEFAULT_MUSIC_FORMAT_STRING,
-  tempUnitSelection: 'f',
-  distanceUnitSelection: 'mi',
-};
+const DEFAULT_TEMP_UNITS = 'f';
+const DEFAULT_DISTANCE_UNITS = 'mi';
 
 const settingsReducer = (state, action) => {
   switch (action.type) {
@@ -42,9 +29,7 @@ const settingsReducer = (state, action) => {
         ...state,
         isWeatherSelected: wantsWeather,
         isMusicSelected: wantsMusic,
-        weatherFormatString,
         initialWeatherFormatString: weatherFormatString,
-        musicFormatString,
         initialMusicFormatString: musicFormatString,
         tempUnitSelection: tempUnits,
         distanceUnitSelection: distanceUnits,
@@ -73,26 +58,6 @@ const settingsReducer = (state, action) => {
         ...state,
         isUpdatingSettings: false,
       };
-    case 'UPDATE_WEATHER_FORMAT_STRING':
-      return {
-        ...state,
-        weatherFormatString: action.payload,
-      };
-    case 'UPDATE_INITIAL_WEATHER_FORMAT_STRING':
-      return {
-        ...state,
-        initialWeatherFormatString: action.payload,
-      };
-    case 'UPDATE_MUSIC_FORMAT_STRING':
-      return {
-        ...state,
-        musicFormatString: action.payload,
-      };
-    case 'UPDATE_INITIAL_MUSIC_FORMAT_STRING':
-      return {
-        ...state,
-        initialMusicFormatString: action.payload,
-      };
     default:
       return state;
   }
@@ -100,11 +65,18 @@ const settingsReducer = (state, action) => {
 
 const Settings = ({ athlete }) => {
   const athleteID = athlete.id;
-  const [state, dispatch] = useReducer(settingsReducer, initialState);
-  // const [requestsPending, setRequestsPending] = useReducer(requestReducer, {
-  //   updatingWeatherFormatString: false,
-  //   updatingMusicFormatString: false,
-  // });
+  const [state, dispatch] = useReducer(settingsReducer, {
+    isLoading: true,
+    isUpdatingSettings: false,
+    isWeatherSelected: true,
+    isMusicSelected: true,
+    isSpotifyAuthorized: false,
+    isError: false,
+    initialWeatherFormatString: DEFAULT_WEATHER_FORMAT_STRING,
+    initialMusicFormatString: DEFAULT_MUSIC_FORMAT_STRING,
+    tempUnitSelection: DEFAULT_TEMP_UNITS,
+    distanceUnitSelection: DEFAULT_DISTANCE_UNITS,
+  });
 
   useEffect(() => {
     let didCancel = false;
@@ -118,56 +90,12 @@ const Settings = ({ athlete }) => {
     };
   }, [athleteID]);
 
-  const updateWeatherFormatString = event => {
-    dispatch({ type: 'UPDATE_WEATHER_FORMAT_STRING', payload: event.target.value });
-  };
-
-  const submitWeatherFormatString = () => {
-    const { weatherFormatString } = state;
-    updateAthleteSettings(athleteID, {
-      weatherFormatString,
-    })
-      .then(res => {
-        if (res.status === 200) {
-          console.log('success');
-          dispatch({ type: 'UPDATE_INITIAL_WEATHER_FORMAT_STRING', payload: weatherFormatString });
-        } else {
-          console.log('failed');
-        }
-      })
-      .catch(err => console.log(`Failed ${err}`));
-  };
-
-  const updateMusicFormatString = event => {
-    dispatch({ type: 'UPDATE_MUSIC_FORMAT_STRING', payload: event.target.value });
-  };
-
-  const submitMusicFormatString = () => {
-    const { musicFormatString } = state;
-    updateAthleteSettings(athleteID, {
-      musicFormatString,
-    })
-      .then(res => {
-        if (res.status === 200) {
-          console.log('success');
-          dispatch({ type: 'UPDATE_INITIAL_MUSIC_FORMAT_STRING', payload: musicFormatString });
-        } else {
-          console.log('failed');
-        }
-      })
-      .catch(err => console.log(`Failed ${err}`));
-  };
-
   const {
     isWeatherSelected,
     isMusicSelected,
     isLoading,
     isUpdatingSettings,
     isError,
-    weatherFormatString,
-    initialWeatherFormatString,
-    musicFormatString,
-    initialMusicFormatString,
   } = state;
 
   const outLinks = [
@@ -243,62 +171,13 @@ $
                 </code>
                 . All other text you enter will be printed verbatim.
               </p>
-              <h3 className='setting-description'>Weather formatting</h3>
-              <h4 className='sub-heading'>Available variables:</h4>
-              <div className='variable-list'>
-                <div className='variable'>summary</div>
-                <div className='variable'>temp</div>
-                <div className='variable'>feelsLike</div>
-                <div className='variable'>emoji</div>
-                <div className='variable'>humidity</div>
-                <div className='variable'>windSpeed</div>
-                <div className='variable'>dewPoint</div>
-                <div className='variable'>cloudCover</div>
-                <div className='variable'>uvIndex</div>
-                <div className='variable'>pressure</div>
-                <div className='variable'>visibility</div>
-                <div className='variable'>ozone</div>
-              </div>
-              <CustomFormat
-                defaultValue='$temp$, $summary$ $emoji$'
-                isSelected={isWeatherSelected}
-                formatString={state.weatherFormatString}
-                updateFormatString={updateWeatherFormatString}
+              <CustomizationSettings
+                athleteID={athleteID}
+                isWeatherSelected={isWeatherSelected}
+                isMusicSelected={isMusicSelected}
+                initialWeatherFormatString={state.initialWeatherFormatString}
+                initialMusicFormatString={state.initialMusicFormatString}
               />
-              <div className='button-box'>
-                <button
-                  type='button'
-                  className='save-format-button no-mobile-highlight'
-                  onClick={submitWeatherFormatString}
-                  disabled={weatherFormatString === initialWeatherFormatString}
-                >
-                  Save
-                </button>
-              </div>
-              <h3 className='setting-description'>Music formatting</h3>
-              <h4 className='sub-heading'>Available variables:</h4>
-              <div className='variable-list'>
-                <div className='variable'>name</div>
-                <div className='variable'>artists</div>
-                <div className='variable'>album</div>
-                <div className='variable'>duration</div>
-              </div>
-              <CustomFormat
-                defaultValue='$name$ - $artists$'
-                isSelected={isMusicSelected}
-                formatString={state.musicFormatString}
-                updateFormatString={updateMusicFormatString}
-              />
-              <div className='button-box'>
-                <button
-                  type='button'
-                  className='save-format-button no-mobile-highlight'
-                  onClick={submitMusicFormatString}
-                  disabled={musicFormatString === initialMusicFormatString}
-                >
-                  Save
-                </button>
-              </div>
             </div>
           </form>
         </div>

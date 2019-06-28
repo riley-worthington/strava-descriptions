@@ -1,0 +1,53 @@
+.sub-heading {
+  font-weight: normal;
+  margin: 10px 0;
+}
+
+.variable-list {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0;
+  margin-bottom: 10px;
+}
+
+.variable {
+  color: #f71b47;
+  font-size: 0.8em;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
+  background-color: rgb(245, 248, 250);
+  padding: 2px 5px;
+  border-radius: 5px;
+  margin: 3px 5px;
+}
+
+.button-box {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.save-format-button {
+  padding: 5px 10px;
+  margin: 10px;
+  border: none;
+  outline: none;
+  background-color: #009BFF;
+  color: white;
+  font-size: 1.2em;
+  font-weight: bold;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.save-format-button:hover {
+  filter: brightness(85%);
+}
+
+.save-format-button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.save-format-button:disabled:hover {
+  filter: none;
+}

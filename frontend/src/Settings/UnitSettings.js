@@ -1,6 +1,7 @@
 import React, { Fragment, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { updateAthleteSettings } from './athleteSettings';
+import './UnitSettings.css';
 
 const unitSettingsReducer = (state, action) => {
   switch (action.type) {

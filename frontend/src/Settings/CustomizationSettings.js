@@ -2,6 +2,7 @@ import React, { Fragment, useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CustomFormat from './CustomFormat';
 import { updateAthleteSettings } from './athleteSettings';
+import './CustomizationSettings.css';
 
 const customizationSettingsReducer = (state, action) => {
   switch (action.type) {

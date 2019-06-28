@@ -4,6 +4,7 @@ import CheckboxItem from '../Setup/CheckboxItem';
 import { updateAthleteSettings } from './athleteSettings';
 import { setNewStateParam } from '../Auth/authHelpers';
 import { SPOTIFY_CLIENT_ID, SPOTIFY_REDIRECT_URI } from '../config';
+import './GeneralSettings.css';
 
 const generalSettingsReducer = (state, action) => {
   switch (action.type) {

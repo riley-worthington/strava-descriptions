@@ -32,7 +32,7 @@ class Setup extends Component {
       isLoading: false,
     });
 
-    loadImages(['powered-by-dark-sky-black', 'spotify-logo-green']).then((sources) => {
+    loadImages(['powered-by-dark-sky-black', 'spotify-logo-green']).then(sources => {
       this.setState({
         imagesLoaded: true,
         imageSources: sources,

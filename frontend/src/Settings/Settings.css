@@ -7,47 +7,6 @@ h2 {
   font-weight: 600;
 }
 
-.submit-button:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.submit-button:disabled:hover {
-  filter: none;
-}
-
-.button-box {
-  width: 100%;
-  display: flex;
-  justify-content: flex-end;
-}
-
-.save-format-button {
-  padding: 5px 10px;
-  margin: 10px;
-  border: none;
-  outline: none;
-  background-color: #009BFF;
-  color: white;
-  font-size: 1.2em;
-  font-weight: bold;
-  border-radius: 20px;
-  cursor: pointer;
-}
-
-.save-format-button:hover {
-  filter: brightness(85%);
-}
-
-.save-format-button:disabled {
-  opacity: 0.5;
-  cursor: default;
-}
-
-.save-format-button:disabled:hover {
-  filter: none;
-}
-
 .title-box {
   max-width: 700px;
   width: 100%;
@@ -56,10 +15,8 @@ h2 {
 }
 
 .settings-page {
-  /* max-width: 700px; */
   width: 100%;
   height: auto;
-  /* min-height: 100%; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -81,11 +38,6 @@ h2 {
   padding: 5px 20px;
 }
 
-.checkboxes {
-  display: flex;
-  flex-direction: column;
-}
-
 .settings-form {
   display: flex;
   flex-direction: column;
@@ -97,64 +49,4 @@ h2 {
   font-size: 1.8em;
   font-family: 'Open Sans', sans-serif;
   color: var(--cerulean);
-}
-
-.sub-heading {
-  font-weight: normal;
-  margin: 10px 0;
-}
-
-.variable-list {
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0;
-  margin-bottom: 10px;
-}
-
-.variable {
-  color: #f71b47;
-  font-size: 0.8em;
-  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
-  background-color: rgb(245, 248, 250);
-  padding: 2px 5px;
-  border-radius: 5px;
-  margin: 3px 5px;
-}
-
-.unit-select {
-  display: flex;
-  margin-bottom: 30px;
-}
-
-.radio-box {
-  margin: 0 10px;
-  display: flex;
-  align-items: center;
-}
-
-.radio {
-  cursor: pointer;
-  outline: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  width: 25px;
-  height: 25px;
-  padding: 3px;
-  /* background-color only for content */
-  background-clip: content-box;
-  border: 2px solid #009BFF;
-  /* opacity: 0.4; */
-  border-radius: 50%;
-  vertical-align: bottom;
-  color: #009BFF;
-}
-
-.radio:checked {
-  background-color: #009BFF;
-  border: 2px solid #009BFF;
-  opacity: 1;
-}
-
-.radio-box > label {
-  margin-left: 5px;
 }

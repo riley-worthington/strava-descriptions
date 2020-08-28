@@ -52,6 +52,7 @@ const handleWebhookEvent = async (activityID, athleteID) => {
       start_longitude: startLongitude,
       start_date: startDate,
       elapsed_time: elapsedTime,
+      description,
     } = stravaActivity;
     if (!startDate) {
       return Promise.resolve(`Activity doesn't have a start time. Can't get weather/music info.`);
@@ -80,7 +81,7 @@ const handleWebhookEvent = async (activityID, athleteID) => {
     const [weather, tracks] = await Promise.all([weatherPromise, spotifyTracksPromise]);
 
     const updateString = buildDescription(weather, tracks);
-    return updateDescription(activityID, stravaAccessToken, updateString);
+    return updateDescription(activityID, stravaAccessToken, `${description}\n${updateString}`);
   } catch (error) {
     return Promise.reject(Error(error));
   }

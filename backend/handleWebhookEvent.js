@@ -1,5 +1,8 @@
 const getActivity = require('./getActivity');
-const { isStravaTokenValid, refreshStravaToken } = require('./getStravaAccessToken');
+const {
+  isStravaTokenValid,
+  refreshStravaToken,
+} = require('./getStravaAccessToken');
 const refreshSpotifyToken = require('./refreshSpotifyToken');
 const getSpotifyRecentlyPlayed = require('./getSpotifyRecentlyPlayed');
 const getSongsPlayedDuringActivity = require('./getSongsPlayedDuringActivity');
@@ -11,13 +14,18 @@ const getSettingsAndTokens = require('./getSettingsAndTokens');
 async function getSpotifyTracks(
   spotifyToken,
   epochStartTimeMS,
-  epochEndTimeMS,
+  epochEndTimeMS
 ) {
-  const spotifyHistory = await getSpotifyRecentlyPlayed(epochStartTimeMS, spotifyToken);
-  const duringActivity = getSongsPlayedDuringActivity(
-    spotifyHistory.items, epochStartTimeMS, epochEndTimeMS,
+  const spotifyHistory = await getSpotifyRecentlyPlayed(
+    epochStartTimeMS,
+    spotifyToken
   );
-  const tracks = duringActivity.map(item => item.track).reverse();
+  const duringActivity = getSongsPlayedDuringActivity(
+    spotifyHistory.items,
+    epochStartTimeMS,
+    epochEndTimeMS
+  );
+  const tracks = duringActivity.map((item) => item.track).reverse();
   return tracks;
 }
 
@@ -44,7 +52,10 @@ const handleWebhookEvent = async (activityID, athleteID) => {
 
     // Refresh Strava token if necessary and get the activity
     if (!isStravaTokenValid(stravaExpiresAt)) {
-      stravaAccessToken = await refreshStravaToken(stravaRefreshToken, athleteID);
+      stravaAccessToken = await refreshStravaToken(
+        stravaRefreshToken,
+        athleteID
+      );
     }
     const stravaActivity = await getActivity(activityID, stravaAccessToken);
     const {
@@ -55,33 +66,46 @@ const handleWebhookEvent = async (activityID, athleteID) => {
       description,
     } = stravaActivity;
     if (!startDate) {
-      return Promise.resolve(`Activity doesn't have a start time. Can't get weather/music info.`);
+      return Promise.resolve(
+        `Activity doesn't have a start time. Can't get weather/music info.`
+      );
     }
     const epochStartTimeMS = Date.parse(startDate);
     const epochStartTime = Math.floor(epochStartTimeMS / 1000);
 
     // Weather
     if ((!startLatitude || !startLongitude) && wantsWeather) {
-      console.log(`User wants weather but this activity doesn't have a location.`);
+      console.log(
+        `User wants weather but this activity doesn't have a location.`
+      );
     }
-    const weatherPromise = (wantsWeather && startLatitude && startLongitude)
-      ? getWeatherConditions(startLatitude, startLongitude, epochStartTime)
-      : Promise.resolve({
-        icon: null,
-        temperature: null,
-      });
+    const weatherPromise =
+      wantsWeather && startLatitude && startLongitude
+        ? getWeatherConditions(startLatitude, startLongitude, epochStartTime)
+        : Promise.resolve({
+            icon: null,
+            temperature: null,
+          });
 
     // Spotify
     const spotifyToken = await spotifyTokenPromise;
-    const epochEndTimeMS = epochStartTimeMS + (elapsedTime * 1000);
-    const spotifyTracksPromise = (wantsMusic && spotifyToken)
-      ? getSpotifyTracks(spotifyToken, epochStartTimeMS, epochEndTimeMS)
-      : Promise.resolve(null);
+    const epochEndTimeMS = epochStartTimeMS + elapsedTime * 1000;
+    const spotifyTracksPromise =
+      wantsMusic && spotifyToken
+        ? getSpotifyTracks(spotifyToken, epochStartTimeMS, epochEndTimeMS)
+        : Promise.resolve(null);
 
-    const [weather, tracks] = await Promise.all([weatherPromise, spotifyTracksPromise]);
+    const [weather, tracks] = await Promise.all([
+      weatherPromise,
+      spotifyTracksPromise,
+    ]);
 
     const updateString = buildDescription(weather, tracks);
-    return updateDescription(activityID, stravaAccessToken, `${description}\n${updateString}`);
+    return updateDescription(
+      activityID,
+      stravaAccessToken,
+      `${description || ''}\n\n${updateString}`
+    );
   } catch (error) {
     return Promise.reject(Error(error));
   }

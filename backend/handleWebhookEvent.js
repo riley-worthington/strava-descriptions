@@ -11,6 +11,19 @@ const buildDescription = require('./buildDescription');
 const updateDescription = require('./updateDescription');
 const getSettingsAndTokens = require('./getSettingsAndTokens');
 
+const putDescriptionAndUpdateStringTogether = (description, updateString) => {
+  if (description && updateString) {
+    return `${description}\n\n${updateString}`;
+  }
+  if (description) {
+    return description;
+  }
+  if (updateString) {
+    return updateString;
+  }
+  return '';
+};
+
 async function getSpotifyTracks(
   spotifyToken,
   epochStartTimeMS,
@@ -104,7 +117,7 @@ const handleWebhookEvent = async (activityID, athleteID) => {
     return updateDescription(
       activityID,
       stravaAccessToken,
-      `${description || ''}\n\n${updateString}`
+      putDescriptionAndUpdateStringTogether(description, updateString)
     );
   } catch (error) {
     return Promise.reject(Error(error));

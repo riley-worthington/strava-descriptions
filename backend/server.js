@@ -5,7 +5,7 @@ const cors = require('cors');
 
 const authorizeStrava = require('./authorizeStrava');
 const authorizeSpotify = require('./authorizeSpotify');
-const handleWebhookEvent = require('./handleWebhookEvent');
+const handleWebhookEvent = require('./handleWebhookEvent').default;
 const updateSettings = require('./updateSettings');
 const getSettings = require('./getSettings');
 
@@ -33,8 +33,8 @@ app.post('/subscription', (req, res) => {
 
   if (objectType === 'activity' && aspectType === 'create') {
     handleWebhookEvent(objectId, ownerId)
-      .then(message => console.log(message))
-      .catch(error => {
+      .then((message) => console.log(message))
+      .catch((error) => {
         console.log('Something went wrong');
         console.log(error);
       })
@@ -42,19 +42,18 @@ app.post('/subscription', (req, res) => {
   }
 });
 
-
 app.post('/auth/strava', (req, res) => {
   const { code } = req.body;
   authorizeStrava(code)
-    .then(data => res.send(JSON.stringify(data)))
-    .catch(error => console.log(error));
+    .then((data) => res.send(JSON.stringify(data)))
+    .catch((error) => console.log(error));
 });
 
 app.post('/auth/spotify', (req, res) => {
   const { athleteID, code, redirectURI } = req.body;
   authorizeSpotify(athleteID, code, redirectURI)
-    .then(data => res.send(JSON.stringify(data)))
-    .catch(error => console.log(error));
+    .then((data) => res.send(JSON.stringify(data)))
+    .catch((error) => console.log(error));
 });
 
 // app.put('/settings/:id', (req, res) => {
@@ -77,7 +76,7 @@ app.post('/settings/:id', (req, res) => {
       console.log(`Updated settings ${changes}`);
       res.sendStatus(200);
     })
-    .catch(error => {
+    .catch((error) => {
       console.log(error);
     });
 });
@@ -85,10 +84,10 @@ app.post('/settings/:id', (req, res) => {
 app.get('/settings/:id', (req, res) => {
   const athleteID = req.params.id;
   getSettings(athleteID)
-    .then(data => {
+    .then((data) => {
       res.send(JSON.stringify(data));
     })
-    .catch(error => console.log(error));
+    .catch((error) => console.log(error));
 });
 
 app.post('/', (req, res) => {

@@ -11,8 +11,13 @@ const buildDescription = require('./buildDescription');
 const updateDescription = require('./updateDescription');
 const getSettingsAndTokens = require('./getSettingsAndTokens');
 
+// eslint-disable-next-line import/prefer-default-export
 const putDescriptionAndUpdateStringTogether = (description, updateString) => {
   if (description && updateString) {
+    if (description.includes(updateString)) {
+      // we have already updated the description, don't need to do anything
+      return description;
+    }
     return `${description}\n\n${updateString}`;
   }
   if (description) {
@@ -124,4 +129,7 @@ const handleWebhookEvent = async (activityID, athleteID) => {
   }
 };
 
-module.exports = handleWebhookEvent;
+module.exports = {
+  default: handleWebhookEvent,
+  putDescriptionAndUpdateStringTogether,
+};
